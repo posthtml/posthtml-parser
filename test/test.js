@@ -9,6 +9,14 @@ var tree = require('./templates/parser.js');
 
 describe('PostHTML-Parser test', function() {
     it('html to tree', function() {
-        expect(tree).to.eql(parser(html));
+        expect(parser(html)).to.eql(tree);
+    });
+
+    it('comment', function() {
+        expect(parser('<div><!--comment--></div>')).to.eql([{tag: 'div', content: ['<!--comment-->']}]);
+    });
+
+    it('last comment', function() {
+        expect(parser('<!--comment-->')).to.eql(['<!--comment-->']);
     });
 });
