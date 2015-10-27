@@ -19,4 +19,8 @@ describe('PostHTML-Parser test', function() {
     it('last comment', function() {
         expect(parser('<!--comment-->')).to.eql(['<!--comment-->']);
     });
+
+    it('doctype', function() {
+        expect(parser('<!doctype html><html></html>')).to.eql(['<!doctype html>', { tag: 'html' }]);
+    });
 });
