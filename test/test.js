@@ -37,4 +37,12 @@ describe('PostHTML-Parser test', function() {
             tag: 'div', attrs: { id: 'id', class: 'class'} }
         ]);
     });
+
+    it('should be parse text', function() {
+        expect(parser('Text')).to.eql(['Text']);
+    });
+
+    it('should be parse text in content', function() {
+        expect(parser('<div>Text</div>')).to.eql([{ tag: 'div', content: ['Text'] }]);
+    });
 });
