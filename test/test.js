@@ -2,16 +2,8 @@ var parser = require('..');
 var describe = require('mocha').describe;
 var it = require('mocha').it;
 var expect = require('chai').expect;
-var path = require('path');
-var fs = require('fs');
-var html = fs.readFileSync(path.resolve(__dirname, 'templates/render.html'), 'utf8').toString();
-var tree = require('./templates/parser.js');
 
 describe('PostHTML-Parser test', function() {
-    it('html to tree', function() {
-        expect(parser(html)).to.eql(tree);
-    });
-
     it('should be parse comment', function() {
         expect(parser('<!--comment-->')).to.eql(['<!--comment-->']);
     });
@@ -44,5 +36,17 @@ describe('PostHTML-Parser test', function() {
 
     it('should be parse text in content', function() {
         expect(parser('<div>Text</div>')).to.eql([{ tag: 'div', content: ['Text'] }]);
+    });
+
+    it('should be parse not a single node in tree', function() {
+        expect(parser('<span>Text1</span><span>Text2</span>Text3')).to.eql([
+            { tag: 'span', content: ['Text1']}, { tag: 'span', content: ['Text2']}, 'Text3'
+        ]);
+    });
+
+    it('should be parse not a single node in parent content', function() {
+        expect(parser('<div><span>Text1</span><span>Text2</span>Text3</div>')).to.eql([
+            { tag: 'div', content: [{ tag: 'span', content: ['Text1']}, { tag: 'span', content: ['Text2']}, 'Text3'] }
+        ]);
     });
 });
