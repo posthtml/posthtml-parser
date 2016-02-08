@@ -49,4 +49,14 @@ describe('PostHTML-Parser test', function() {
             { tag: 'div', content: [{ tag: 'span', content: ['Text1']}, { tag: 'span', content: ['Text2']}, 'Text3'] }
         ]);
     });
+
+    it('should apply \'file\' to every tag if \'from\' option is specified', function() {
+        var file = './some-file.html';
+        expect(parser('<div><span>Text</span><span></span></div>', { from: file })).to.eql([
+            { tag: 'div', file: file, content: [
+                { tag: 'span', file: file, content: ['Text']},
+                { tag: 'span', file: file}
+            ] }
+        ]);
+    });
 });

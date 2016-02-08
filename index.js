@@ -6,9 +6,11 @@ var htmlparser = require('htmlparser2');
  * @param  {String} html
  * @return {Object}
  */
-module.exports = function postHTMLParser(html) {
+module.exports = function postHTMLParser(html, options) {
     var bufArray = [],
         results = [];
+
+    options = options || {};
 
     bufArray.last = function() {
         return this[this.length - 1];
@@ -34,6 +36,9 @@ module.exports = function postHTMLParser(html) {
             var buf = {};
 
             buf.tag = tag;
+            if (options.from) {
+                buf.file = options.from;
+            }
 
             if (!isEmpty(attrs)) buf.attrs = attrs;
 
