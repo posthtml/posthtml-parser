@@ -63,7 +63,7 @@ module.exports = function postHTMLParser(html) {
             last.content || (last.content = []);
             last.content.push(text);
         }
-    }, {lowerCaseTags: false});
+    }, {xmlMode: true});
 
     parser.write(html);
     parser.end();
@@ -77,5 +77,4 @@ function isEmpty(obj) {
             return false;
         }
     }
-    return true;
-}
+    return true;}
