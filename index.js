@@ -63,7 +63,7 @@ module.exports = function postHTMLParser(html) {
             last.content || (last.content = []);
             last.content.push(text);
         }
-    });
+    }, {xmlMode: true});
 
     parser.write(html);
     parser.end();
