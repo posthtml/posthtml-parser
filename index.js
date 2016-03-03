@@ -16,7 +16,7 @@ module.exports = function postHTMLParser(html) {
 
     var parser = new htmlparser.Parser({
         onprocessinginstruction: function(name, data) {
-            name === '!doctype' && results.push('<' + data + '>');
+            name.toLowerCase() === '!doctype' && results.push('<' + data + '>');
         },
         oncomment: function(data) {
             var comment = '<!--' + data + '-->',
@@ -63,7 +63,7 @@ module.exports = function postHTMLParser(html) {
             last.content || (last.content = []);
             last.content.push(text);
         }
-    });
+    }, {lowerCaseTags: false});
 
     parser.write(html);
     parser.end();
