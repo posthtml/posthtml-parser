@@ -4,8 +4,8 @@ var it = require('mocha').it;
 var expect = require('chai').expect;
 
 describe('PostHTML-Parser test', function() {
-    it('should be parse doctype in uppercase', function() { 
-        expect(parser('<!DOCTYPE html>')).to.eql(['<!DOCTYPE html>']); 
+    it('should be parse doctype in uppercase', function() {
+        expect(parser('<!DOCTYPE html>')).to.eql(['<!DOCTYPE html>']);
     });
 
     it('should be parse comment', function() {
