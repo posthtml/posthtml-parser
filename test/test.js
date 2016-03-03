@@ -49,4 +49,10 @@ describe('PostHTML-Parser test', function() {
             { tag: 'div', content: [{ tag: 'span', content: ['Text1']}, { tag: 'span', content: ['Text2']}, 'Text3'] }
         ]);
     });
+
+    it('should be parse camelCase tag name', function() {
+        expect(parser('<mySuperTag></mySuperTag>')).to.eql([
+            { tag: 'mySuperTag' }
+        ]);
+    });
 });
