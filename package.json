@@ -17,10 +17,7 @@
     "preversion": "npm test",
     "postversion": "git push && git push --tags && rm -rf coverage"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/posthtml/posthtml-parser.git"
-  },
+  "repository": "posthtml/posthtml-parser",
   "author": "Ivan Voischev <voischev.ivan@ya.ru>",
   "license": "MIT",
   "bugs": {
