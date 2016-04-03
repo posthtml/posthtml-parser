@@ -34,9 +34,7 @@ module.exports = function postHTMLParser(html) {
             last.content.push(comment);
         },
         onopentag: function(tag, attrs) {
-            var buf = {};
-
-            buf.tag = tag;
+            var buf = { tag: tag };
 
             if (Object.keys(attrs).length) {
                 buf.attrs = attrs;
@@ -47,15 +45,16 @@ module.exports = function postHTMLParser(html) {
         onclosetag: function() {
             var buf = bufArray.pop();
 
-            if (bufArray.length === 0) {
+            if (!bufArray.length) {
                 results.push(buf);
                 return;
             }
 
             var last = bufArray.last();
-            if (!(last.content instanceof Array)) {
+            if (!Array.isArray(last.content)) {
                 last.content = [];
             }
+
             last.content.push(buf);
         },
         ontext: function(text) {
