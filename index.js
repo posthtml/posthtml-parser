@@ -1,4 +1,3 @@
-/*jshint -W082 */
 var htmlparser = require('htmlparser2');
 
 /**
@@ -16,7 +15,9 @@ module.exports = function postHTMLParser(html) {
 
     var parser = new htmlparser.Parser({
         onprocessinginstruction: function(name, data) {
-            name.toLowerCase() === '!doctype' && results.push('<' + data + '>');
+            if (name.toLowerCase() === '!doctype') {
+                results.push('<' + data + '>');
+            }
         },
         oncomment: function(data) {
             var comment = '<!--' + data + '-->',
