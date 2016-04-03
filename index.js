@@ -38,7 +38,9 @@ module.exports = function postHTMLParser(html) {
 
             buf.tag = tag;
 
-            if (!isEmpty(attrs)) buf.attrs = attrs;
+            if (Object.keys(attrs).length) {
+                buf.attrs = attrs;
+            }
 
             bufArray.push(buf);
         },
@@ -73,12 +75,3 @@ module.exports = function postHTMLParser(html) {
 
     return results;
 };
-
-function isEmpty(obj) {
-    for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            return false;
-        }
-    }
-    return true;
-}
