@@ -1,4 +1,5 @@
-/*jshint -W082 */
+'use strict';
+
 var htmlparser = require('htmlparser2');
 
 /**
@@ -16,7 +17,9 @@ module.exports = function postHTMLParser(html) {
 
     var parser = new htmlparser.Parser({
         onprocessinginstruction: function(name, data) {
-            name.toLowerCase() === '!doctype' && results.push('<' + data + '>');
+            if (name.toLowerCase() === '!doctype') {
+                results.push('<' + data + '>');
+            }
         },
         oncomment: function(data) {
             var comment = '<!--' + data + '-->',
@@ -31,26 +34,27 @@ module.exports = function postHTMLParser(html) {
             last.content.push(comment);
         },
         onopentag: function(tag, attrs) {
-            var buf = {};
+            var buf = { tag: tag };
 
-            buf.tag = tag;
-
-            if (!isEmpty(attrs)) buf.attrs = attrs;
+            if (Object.keys(attrs).length) {
+                buf.attrs = attrs;
+            }
 
             bufArray.push(buf);
         },
         onclosetag: function() {
             var buf = bufArray.pop();
 
-            if (bufArray.length === 0) {
+            if (!bufArray.length) {
                 results.push(buf);
                 return;
             }
 
             var last = bufArray.last();
-            if (!(last.content instanceof Array)) {
+            if (!Array.isArray(last.content)) {
                 last.content = [];
             }
+
             last.content.push(buf);
         },
         ontext: function(text) {
@@ -70,12 +74,3 @@ module.exports = function postHTMLParser(html) {
 
     return results;
 };
-
-function isEmpty(obj) {
-    for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            return false;
-        }
-    }
-    return true;
-}
