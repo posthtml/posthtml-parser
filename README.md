@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/posthtml/posthtml-parser.svg?branch=master)](https://travis-ci.org/posthtml/posthtml-parser?branch=master)
 [![Coverage Status](https://coveralls.io/repos/posthtml/posthtml-parser/badge.svg?branch=master)](https://coveralls.io/r/posthtml/posthtml-parser?branch=master)
 
-Parse HTML/XML to [PostHTMLTree](https://github.com/posthtml/posthtml#posthtml-json-tree-example). 
+Parse HTML/XML to [PostHTML AST](https://github.com/posthtml/posthtml-parser#posthtml-ast-format).
 More about [PostHTML](https://github.com/posthtml/posthtml#readme)
 
 ## Install
@@ -13,20 +13,20 @@ More about [PostHTML](https://github.com/posthtml/posthtml#readme)
 $ npm install posthtml-parser
 ```
 
-## Usage 
+## Usage
 
-#### input HTML
+#### Input HTML
 ```html
 <a class="animals" href="#">
     <span class="animals__cat" style="background: url(cat.png)">Cat</span>
 </a>
 ```
 ```js
-var parser = require('posthtml-parser');
-var fs = require('fs');
-var html = fs.readFileSync('path/to/input.html').toString();
+const parser = require('posthtml-parser')
+const fs = require('fs')
+const html = fs.readFileSync('path/to/input.html').toString()
 
-clonsole.log(parser(html)); // Look #Result PostHTMLTree
+console.log(parser(html)) // Logs a PostHTML AST
 ```
 
 #### input HTML
@@ -58,6 +58,24 @@ clonsole.log(parser(html)); // Look #Result PostHTMLTree
     ]
 }]
 ```
+
+## PostHTML AST Format
+
+Any parser being used with PostHTML should return a standard PostHTML [Abstract Syntax Tree](https://www.wikiwand.com/en/Abstract_syntax_tree) (AST). Fortunately, this is a very easy format to produce and understand. The AST is an array that can contain strings and objects. Any strings represent plain text content to be written to the output. Any objects represent HTML tags.
+
+Tag objects generally look something like this:
+
+```js
+{
+    tag: 'div',
+    attrs: {
+        class: 'foo'
+    },
+    content: ['hello world!']
+}
+```
+
+Tag objects can contain three keys. The `tag` key takes the name of the tag as the value. This can include custom tags. The optional `attrs` key takes an object with key/value pairs representing the attributes of the html tag. A boolean attribute has an empty string as its value. Finally, the optional `content` key takes an array as its value, which is a PostHTML AST. In this manner, the AST is a tree that should be walked recursively.
 
 ## License
 
