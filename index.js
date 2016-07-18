@@ -1,13 +1,20 @@
 'use strict';
 
 var htmlparser = require('htmlparser2');
+var isObject = require('isobject');
+
+/**
+ * @see https://github.com/fb55/htmlparser2/wiki/Parser-options
+ */
+var defaultOptions = {lowerCaseTags: false};
 
 /**
  * Parse html to PostHTMLTree
  * @param  {String} html
- * @return {Object}
+ * @param  {Object} [options=defaultOptions]
+ * @return {PostHTMLTree}
  */
-module.exports = function postHTMLParser(html) {
+function postHTMLParser(html, options) {
     var bufArray = [],
         results = [];
 
@@ -67,10 +74,30 @@ module.exports = function postHTMLParser(html) {
             last.content || (last.content = []);
             last.content.push(text);
         }
-    }, {lowerCaseTags: false});
+    }, options || defaultOptions);
 
     parser.write(html);
     parser.end();
 
     return results;
-};
+}
+
+function parserWrapper() {
+    var option;
+
+    function parser(html) {
+        var opt = option || defaultOptions;
+        return postHTMLParser(html, opt);
+    }
+
+    if (arguments.length === 1 && isObject(arguments[0])) {
+        option = arguments[0];
+        return parser;
+    }
+
+    option = arguments[1];
+    return parser(arguments[0]);
+}
+
+module.exports = parserWrapper;
+module.exports.defaultOptions = defaultOptions;

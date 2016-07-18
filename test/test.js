@@ -1,9 +1,55 @@
 var parser = require('..');
+var parserWithMockedDeps = require('rewire')('..');
 var describe = require('mocha').describe;
 var it = require('mocha').it;
-var expect = require('chai').expect;
+var beforeEach = require('mocha').beforeEach;
+var chai = require('chai');
+var sinon = require('sinon');
+var expect = chai.expect;
+chai.use(require('sinon-chai'));
 
 describe('PostHTML-Parser test', function() {
+    describe('Call signatures', function() {
+        var customOptions = {lowerCaseTags: false, lowerCaseAttributeNames: false};
+        var MockedHtmlParser2;
+        var parserSpy;
+
+        beforeEach(function() {
+            // jscs:disable requireFunctionDeclarations
+            MockedHtmlParser2 = function() {};
+            MockedHtmlParser2.prototype = {
+                write: function() {},
+                end: function() {}
+            };
+            // jscs:enable requireFunctionDeclarations
+
+            // Create spy on mocked htmlparser2 to collect call stats
+            parserSpy = sinon.spy(MockedHtmlParser2);
+
+            // Replace real htmlparser2 dependency of posthtml-parser with mocked
+            parserWithMockedDeps.__set__({
+                htmlparser: {Parser: parserSpy}
+            });
+        });
+
+        it('should use default options when called with 1 param', function() {
+            parserWithMockedDeps('');
+            expect(parserSpy.firstCall.args[1]).to.eql(parser.defaultOptions);
+        });
+
+        it('should use custom options when called with 2 params', function() {
+            parserWithMockedDeps('', customOptions);
+            expect(parserSpy.firstCall.args[1]).to.eql(customOptions);
+        });
+
+        it('should use custom params when called as factory function', function() {
+            var factory = parserWithMockedDeps(customOptions);
+            expect(factory).to.be.a('function');
+            expect(factory('')).to.be.an('array');
+            expect(parserSpy.firstCall.args[1]).to.eql(customOptions);
+        });
+    });
+
     it('should be parse doctype in uppercase', function() {
         expect(parser('<!DOCTYPE html>')).to.eql(['<!DOCTYPE html>']);
     });
