@@ -6,7 +6,7 @@ var isObject = require('isobject');
 /**
  * @see https://github.com/fb55/htmlparser2/wiki/Parser-options
  */
-var defaultOptions = {lowerCaseTags: false};
+var defaultOptions = {lowerCaseTags: false, lowerCaseAttributeNames: false};
 
 /**
  * Parse html to PostHTMLTree
