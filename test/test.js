@@ -66,6 +66,14 @@ describe('PostHTML-Parser test', function() {
         expect(parser('<!doctype html>')).to.eql(['<!doctype html>']);
     });
 
+    it('should be parse directive', function() {
+        var customDirectives = {directives: [
+            {name: '?php', start: '<', end: '>'}
+        ]};
+
+        expect(parser('<?php echo "Hello word"; ?>', customDirectives)).to.eql(['<?php echo "Hello word"; ?>']);
+    });
+
     it('should be parse tag', function() {
         expect(parser('<html></html>')).to.eql([{ tag: 'html' }]);
     });
@@ -104,11 +112,5 @@ describe('PostHTML-Parser test', function() {
         expect(parser('<mySuperTag></mySuperTag>')).to.eql([
             { tag: 'mySuperTag' }
         ]);
-    });
-
-    it('should be parse directive', function() {
-        expect(parser('<?php echo "Hello word"; ?>')).to.eql([
-            { type: 'directive', content: ['?php echo "Hello word"; ?']
-        }]);
     });
 });
