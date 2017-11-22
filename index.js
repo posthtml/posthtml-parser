@@ -8,6 +8,8 @@ var isObject = require('isobject');
  */
 var defaultOptions = {lowerCaseTags: false, lowerCaseAttributeNames: false};
 
+var defaultDirectives = [{name: '!doctype', start: '<', end: '>'}];
+
 /**
  * Parse html to PostHTMLTree
  * @param  {String} html
@@ -22,12 +24,22 @@ function postHTMLParser(html, options) {
         return this[this.length - 1];
     };
 
-    var parser = new htmlparser.Parser({
-        onprocessinginstruction: function(name, data) {
-            if (name.toLowerCase() === '!doctype') {
-                results.push('<' + data + '>');
+    function parserDirective(name, data) {
+        var directives = options.directives || defaultDirectives;
+
+        for (var i = 0; i < directives.length; i++) {
+            if (name.toLowerCase() === directives[i].name) {
+                results.push(
+                    directives[i].start +
+                    data +
+                    directives[i].end
+                );
             }
-        },
+        }
+    }
+
+    var parser = new htmlparser.Parser({
+        onprocessinginstruction: parserDirective,
         oncomment: function(data) {
             var comment = '<!--' + data + '-->',
                 last = bufArray.last();
