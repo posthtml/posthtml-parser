@@ -105,4 +105,10 @@ describe('PostHTML-Parser test', function() {
             { tag: 'mySuperTag' }
         ]);
     });
+
+    it('should be parse directive', function() {
+        expect(parser('<?php echo "Hello word"; ?>')).to.eql([
+            { type: 'directive', content: ['?php echo "Hello word"; ?']
+        }]);
+    });
 });
