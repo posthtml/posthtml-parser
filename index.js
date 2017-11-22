@@ -28,12 +28,10 @@ function postHTMLParser(html, options) {
         var directives = options.directives || defaultDirectives;
 
         for (var i = 0; i < directives.length; i++) {
-            if (name.toLowerCase() === directives[i].name) {
-                results.push(
-                    directives[i].start +
-                    data +
-                    directives[i].end
-                );
+            var directive = directives[i];
+
+            if (name.toLowerCase() === directive.name) {
+                results.push(directive.start + data + directive.end);
             }
         }
     }
