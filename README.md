@@ -77,6 +77,13 @@ Tag objects generally look something like this:
 
 Tag objects can contain three keys. The `tag` key takes the name of the tag as the value. This can include custom tags. The optional `attrs` key takes an object with key/value pairs representing the attributes of the html tag. A boolean attribute has an empty string as its value. Finally, the optional `content` key takes an array as its value, which is a PostHTML AST. In this manner, the AST is a tree that should be walked recursively.
 
+## Options
+
+### `directives`
+Type: `Array`  
+Default: `[{name: '!doctype', start: '<', end: '>'}]`   
+Description: *Adds processing of custom directives*  
+
 ## License
 
 [MIT](LICENSE)
