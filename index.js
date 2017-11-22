@@ -113,3 +113,4 @@ function parserWrapper() {
 
 module.exports = parserWrapper;
 module.exports.defaultOptions = defaultOptions;
+module.exports.defaultDirectives = defaultDirectives;
