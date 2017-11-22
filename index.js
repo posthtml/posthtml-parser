@@ -26,12 +26,20 @@ function postHTMLParser(html, options) {
 
     function parserDirective(name, data) {
         var directives = options.directives || defaultDirectives;
+        var last = bufArray.last();
 
         for (var i = 0; i < directives.length; i++) {
             var directive = directives[i];
+            var directiveText = directive.start + data + directive.end;
 
             if (name.toLowerCase() === directive.name) {
-                results.push(directive.start + data + directive.end);
+                if (!last) {
+                    results.push(directiveText);
+                    return;
+                }
+
+                last.content || (last.content = []);
+                last.content.push(directiveText);
             }
         }
     }
