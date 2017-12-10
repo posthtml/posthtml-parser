@@ -10,6 +10,7 @@
     "posthtmltree"
   ],
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "npm run lint && npm run coverage",
     "lint": "jshint . && jscs -v .",
