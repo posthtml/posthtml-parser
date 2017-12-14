@@ -58,6 +58,11 @@ describe('PostHTML-Parser test', function() {
         expect(parser('<!--comment-->')).to.eql(['<!--comment-->']);
     });
 
+    it('should be parse comment', function() {
+        expect(parser('<script><![CDATA[console.log(1);]]></script>', {xmlMode: true}))
+            .to.eql([{tag: 'script', content: ['console.log(1);']}]);
+    });
+
     it('should be parse comment in content', function() {
         expect(parser('<div><!--comment--></div>')).to.eql([{tag: 'div', content: ['<!--comment-->']}]);
     });
