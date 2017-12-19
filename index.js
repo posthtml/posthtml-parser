@@ -1,6 +1,6 @@
 'use strict';
 
-var htmlparser = require('htmlparser2');
+var Parser = require('htmlparser2/lib/Parser');
 var isObject = require('isobject');
 var objectAssign = require('object-assign');
 
@@ -56,7 +56,7 @@ function postHTMLParser(html, options) {
         return result;
     }
 
-    var parser = new htmlparser.Parser({
+    var parser = new Parser({
         onprocessinginstruction: parserDirective,
         oncomment: function(data) {
             var comment = '<!--' + data + '-->',

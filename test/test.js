@@ -28,7 +28,7 @@ describe('PostHTML-Parser test', function() {
 
             // Replace real htmlparser2 dependency of posthtml-parser with mocked
             parserWithMockedDeps.__set__({
-                htmlparser: {Parser: parserSpy}
+                Parser: parserSpy
             });
         });
 
