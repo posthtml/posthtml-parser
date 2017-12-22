@@ -18,6 +18,7 @@ var defaultDirectives = [{name: '!doctype', start: '<', end: '>'}];
  */
 function postHTMLParser(html, options) {
     var bufArray = [],
+        bufAttributes = {},
         results = [];
 
     bufArray.last = function() {
@@ -44,6 +45,15 @@ function postHTMLParser(html, options) {
         }
     }
 
+    function normalizeArributes(attrs) {
+        var result = {};
+        Object.keys(attrs).forEach(function(key) {
+            Object.assign(result, {[key]: attrs[key].replace(/&quot;/g, '"')});
+        });
+
+        return result;
+    }
+
     var parser = new htmlparser.Parser({
         onprocessinginstruction: parserDirective,
         oncomment: function(data) {
@@ -61,11 +71,15 @@ function postHTMLParser(html, options) {
         onopentag: function(tag, attrs) {
             var buf = { tag: tag };
 
-            if (Object.keys(attrs).length) {
-                buf.attrs = attrs;
+            if (Object.keys(bufAttributes).length) {
+                buf.attrs = normalizeArributes(bufAttributes);
+                bufAttributes = {};
             }
 
             bufArray.push(buf);
+        },
+        onattribute: function(name, value) {
+            Object.assign(bufAttributes, {[name]: value});
         },
         onclosetag: function() {
             var buf = bufArray.pop();
