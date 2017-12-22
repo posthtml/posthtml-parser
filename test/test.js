@@ -63,6 +63,58 @@ describe('PostHTML-Parser test', function() {
             .to.eql([{tag: 'script', content: ['console.log(1);']}]);
     });
 
+    it('should be parse tag with escape object in attribute', function() {
+        var htmlString = '<button data-bem="{&quot;button&quot;:{&quot;checkedView&quot;:&quot;extra&quot;}}"' +
+            ' type="submit"></button>';
+        // console.log(htmlString);
+        var tree = [
+            {
+                tag: 'button',
+                attrs: {
+                    type: 'submit',
+                    'data-bem': '{"button":{"checkedView":"extra"}}'
+                }
+            }
+        ];
+
+        expect(parser(htmlString)).to.eql(tree);
+    });
+
+    // it('should be parse tag with object in attribute data witchout escape', function() {
+    //     var htmlString = '<button data-bem="{"button":{"checkedView":"extra"}}"' +
+    //         ' type="submit"></button>';
+    //     // console.log(htmlString);
+    //     var tree = [
+    //         {
+    //             tag: 'button',
+    //             attrs: {
+    //                 type: 'submit',
+    //                 'data-bem': '{"button":{"checkedView":"extra"}}'
+    //             }
+    //         }
+    //     ];
+
+    //     expect(parser(htmlString)).to.eql(tree);
+    // });
+
+    // it('should be parse tag with object in attribute data escape', function() {
+    //     var json = JSON.stringify({button: {checkedView:'extra'}});
+    //     var htmlString = '<button data-bem="' + json + '"' +
+    //         ' type="submit"></button>';
+    //     // console.log(htmlString);
+    //     var tree = [
+    //         {
+    //             tag: 'button',
+    //             attrs: {
+    //                 type: 'submit',
+    //                 'data-bem': '{"button":{"checkedView":"extra"}}'
+    //             }
+    //         }
+    //     ];
+
+    //     expect(parser(htmlString)).to.eql(tree);
+    // });
+
     it('should be parse comment in content', function() {
         expect(parser('<div><!--comment--></div>')).to.eql([{tag: 'div', content: ['<!--comment-->']}]);
     });
