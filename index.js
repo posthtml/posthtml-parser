@@ -48,7 +48,9 @@ function postHTMLParser(html, options) {
     function normalizeArributes(attrs) {
         var result = {};
         Object.keys(attrs).forEach(function(key) {
-            Object.assign(result, {[key]: attrs[key].replace(/&quot;/g, '"')});
+            var obj = {};
+                obj[key] = attrs[key].replace(/&quot;/g, '"');
+            Object.assign(result, obj);
         });
 
         return result;
@@ -68,7 +70,7 @@ function postHTMLParser(html, options) {
             last.content || (last.content = []);
             last.content.push(comment);
         },
-        onopentag: function(tag, attrs) {
+        onopentag: function(tag) {
             var buf = { tag: tag };
 
             if (Object.keys(bufAttributes).length) {
@@ -79,7 +81,9 @@ function postHTMLParser(html, options) {
             bufArray.push(buf);
         },
         onattribute: function(name, value) {
-            Object.assign(bufAttributes, {[name]: value});
+            var obj = {};
+                obj[name] = value;
+            Object.assign(bufAttributes, obj);
         },
         onclosetag: function() {
             var buf = bufArray.pop();
