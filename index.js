@@ -18,7 +18,6 @@ var defaultDirectives = [{name: '!doctype', start: '<', end: '>'}];
  */
 function postHTMLParser(html, options) {
     var bufArray = [],
-        bufAttributes = {},
         results = [];
 
     bufArray.last = function() {
@@ -70,20 +69,14 @@ function postHTMLParser(html, options) {
             last.content || (last.content = []);
             last.content.push(comment);
         },
-        onopentag: function(tag) {
+        onopentag: function(tag, attrs) {
             var buf = { tag: tag };
 
-            if (Object.keys(bufAttributes).length) {
-                buf.attrs = normalizeArributes(bufAttributes);
-                bufAttributes = {};
+            if (Object.keys(attrs).length) {
+                buf.attrs = normalizeArributes(attrs);
             }
 
             bufArray.push(buf);
-        },
-        onattribute: function(name, value) {
-            var obj = {};
-                obj[name] = value;
-            Object.assign(bufAttributes, obj);
         },
         onclosetag: function() {
             var buf = bufArray.pop();
