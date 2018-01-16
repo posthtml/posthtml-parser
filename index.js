@@ -1,7 +1,6 @@
 'use strict';
 
 var htmlparser = require('htmlparser2');
-var isObject = require('isobject');
 var objectAssign = require('object-assign');
 
 /**
@@ -120,7 +119,10 @@ function parserWrapper() {
         return postHTMLParser(html, opt);
     }
 
-    if (arguments.length === 1 && isObject(arguments[0])) {
+    if (arguments.length === 1 &&
+        arguments[0] !== null &&
+        typeof arguments[0] === 'object' &&
+        Array.isArray(arguments[0]) === false) {
         option = arguments[0];
         return parser;
     }
