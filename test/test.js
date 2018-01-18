@@ -28,13 +28,13 @@ describe('PostHTML-Parser test', function() {
 
             // Replace real htmlparser2 dependency of posthtml-parser with mocked
             parserWithMockedDeps.__set__({
-                htmlparser: {Parser: parserSpy}
+                Parser: parserSpy
             });
         });
 
         it('should use default options when called with 1 param', function() {
             parserWithMockedDeps('');
-            expect(parserSpy.firstCall.args[1]).to.eql(parser.defaultOptions);
+            expect(parserSpy.firstCall.args[1]).to.eql(customOptions);
         });
 
         it('should use custom options when called with 2 params', function() {
@@ -57,6 +57,63 @@ describe('PostHTML-Parser test', function() {
     it('should be parse comment', function() {
         expect(parser('<!--comment-->')).to.eql(['<!--comment-->']);
     });
+
+    it('should be parse CDATA', function() {
+        expect(parser('<script><![CDATA[console.log(1);]]></script>', {xmlMode: true}))
+            .to.eql([{tag: 'script', content: ['console.log(1);']}]);
+    });
+
+    it('should be parse tag with escape object in attribute', function() {
+        var htmlString = '<button data-bem="{&quot;button&quot;:{&quot;checkedView&quot;:&quot;extra&quot;}}"' +
+            ' type="submit"></button>';
+        // console.log(htmlString);
+        var tree = [
+            {
+                tag: 'button',
+                attrs: {
+                    type: 'submit',
+                    'data-bem': '{"button":{"checkedView":"extra"}}'
+                }
+            }
+        ];
+
+        expect(parser(htmlString)).to.eql(tree);
+    });
+
+    // it('should be parse tag with object in attribute data witchout escape', function() {
+    //     var htmlString = '<button data-bem="{"button":{"checkedView":"extra"}}"' +
+    //         ' type="submit"></button>';
+    //     // console.log(htmlString);
+    //     var tree = [
+    //         {
+    //             tag: 'button',
+    //             attrs: {
+    //                 type: 'submit',
+    //                 'data-bem': '{"button":{"checkedView":"extra"}}'
+    //             }
+    //         }
+    //     ];
+
+    //     expect(parser(htmlString)).to.eql(tree);
+    // });
+
+    // it('should be parse tag with object in attribute data escape', function() {
+    //     var json = JSON.stringify({button: {checkedView:'extra'}});
+    //     var htmlString = '<button data-bem="' + json + '"' +
+    //         ' type="submit"></button>';
+    //     // console.log(htmlString);
+    //     var tree = [
+    //         {
+    //             tag: 'button',
+    //             attrs: {
+    //                 type: 'submit',
+    //                 'data-bem': '{"button":{"checkedView":"extra"}}'
+    //             }
+    //         }
+    //     ];
+
+    //     expect(parser(htmlString)).to.eql(tree);
+    // });
 
     it('should be parse comment in content', function() {
         expect(parser('<div><!--comment--></div>')).to.eql([{tag: 'div', content: ['<!--comment-->']}]);

@@ -1,7 +1,8 @@
 'use strict';
 
-var htmlparser = require('htmlparser2');
+var Parser = require('htmlparser2/lib/Parser');
 var isObject = require('isobject');
+var objectAssign = require('object-assign');
 
 /**
  * @see https://github.com/fb55/htmlparser2/wiki/Parser-options
@@ -25,7 +26,7 @@ function postHTMLParser(html, options) {
     };
 
     function parserDirective(name, data) {
-        var directives = options.directives || defaultDirectives;
+        var directives = objectAssign(defaultDirectives, options.directives);
         var last = bufArray.last();
 
         for (var i = 0; i < directives.length; i++) {
@@ -44,7 +45,18 @@ function postHTMLParser(html, options) {
         }
     }
 
-    var parser = new htmlparser.Parser({
+    function normalizeArributes(attrs) {
+        var result = {};
+        Object.keys(attrs).forEach(function(key) {
+            var obj = {};
+                obj[key] = attrs[key].replace(/&quot;/g, '"');
+            objectAssign(result, obj);
+        });
+
+        return result;
+    }
+
+    var parser = new Parser({
         onprocessinginstruction: parserDirective,
         oncomment: function(data) {
             var comment = '<!--' + data + '-->',
@@ -62,7 +74,7 @@ function postHTMLParser(html, options) {
             var buf = { tag: tag };
 
             if (Object.keys(attrs).length) {
-                buf.attrs = attrs;
+                buf.attrs = normalizeArributes(attrs);
             }
 
             bufArray.push(buf);
@@ -104,7 +116,7 @@ function parserWrapper() {
     var option;
 
     function parser(html) {
-        var opt = option || defaultOptions;
+        var opt = objectAssign(defaultOptions, option);
         return postHTMLParser(html, opt);
     }
 
