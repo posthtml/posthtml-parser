@@ -124,27 +124,33 @@ describe('PostHTML-Parser test', function() {
     });
 
     it('should be parse directive', function() {
-        var customDirectives = {directives: [
-            {name: '?php', start: '<', end: '>'}
-        ]};
+        var options = {
+            directives: [
+                { name: '?php', start: '<', end: '>' }
+            ]
+        };
 
-        expect(parser('<?php echo "Hello word"; ?>', customDirectives)).to.eql(['<?php echo "Hello word"; ?>']);
+        expect(parser('<?php echo "Hello word"; ?>', options)).to.eql(['<?php echo "Hello word"; ?>']);
     });
 
     it('should be parse regular expression directive', function() {
-        var customDirectives = {directives: [
-            {name: /\?(php|=).*/, start: '<', end: '>'}
-        ]};
+        var options = {
+            directives: [
+                { name: /\?(php|=).*/, start: '<', end: '>' }
+            ]
+        };
 
-        expect(parser('<?php echo "Hello word"; ?>', customDirectives)).to.eql(['<?php echo "Hello word"; ?>']);
-        expect(parser('<?="Hello word"?>', customDirectives)).to.eql(['<?="Hello word"?>']);
+        expect(parser('<?php echo "Hello word"; ?>', options)).to.eql(['<?php echo "Hello word"; ?>']);
+        expect(parser('<?="Hello word"?>', options)).to.eql(['<?="Hello word"?>']);
     });
 
     it('should be parse directives and tag', function() {
-        var customDirectives = {directives: [
-            {name: '!doctype', start: '<', end: '>'},
-            {name: '?php', start: '<', end: '>'}
-        ]};
+        var options = {
+            directives: [
+                { name: '!doctype', start: '<', end: '>' },
+                { name: '?php', start: '<', end: '>' }
+            ]
+        };
 
         var html = '<!doctype html><html><?php echo \"Hello word\"; ?></html>';
         var tree = [
@@ -155,7 +161,7 @@ describe('PostHTML-Parser test', function() {
             }
         ];
 
-        expect(parser(html, customDirectives)).to.eql(tree);
+        expect(parser(html, options)).to.eql(tree);
     });
 
     it('should be parse tag', function() {
