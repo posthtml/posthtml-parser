@@ -38,7 +38,9 @@ function postHTMLParser(html, options) {
             tagName = name.toLowerCase();
             if ((directive.name instanceof RegExp) && directive.name.test(tagName)) {
                 isDirective = true;
-            } else if (tagName === directive.name) {
+            }
+
+            if (tagName === directive.name) {
                 isDirective = true;
             }
 
