@@ -34,7 +34,7 @@ describe('PostHTML-Parser test', function() {
 
         it('should use default options when called with 1 param', function() {
             parserWithMockedDeps('');
-            expect(parserSpy.firstCall.args[1]).to.eql(parser.defaultOptions);
+            expect(parserSpy.firstCall.args[1]).to.eql(customOptions);
         });
 
         it('should use custom options when called with 2 params', function() {

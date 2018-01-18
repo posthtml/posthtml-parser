@@ -26,7 +26,7 @@ function postHTMLParser(html, options) {
     };
 
     function parserDirective(name, data) {
-        var directives = options.directives || defaultDirectives;
+        var directives = objectAssign(defaultDirectives, options.directives);
         var last = bufArray.last();
 
         var tagName;
@@ -127,7 +127,7 @@ function parserWrapper() {
     var option;
 
     function parser(html) {
-        var opt = option || defaultOptions;
+        var opt = objectAssign(defaultOptions, option);
         return postHTMLParser(html, opt);
     }
 
