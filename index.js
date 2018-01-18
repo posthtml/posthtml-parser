@@ -113,7 +113,7 @@ function postHTMLParser(html, options) {
 }
 
 function parserWrapper() {
-    var option = {};
+    var option;
 
     function parser(html) {
         var opt = objectAssign(defaultOptions, option);
