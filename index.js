@@ -27,7 +27,7 @@ function postHTMLParser(html, options) {
 
     function isDirective(directive, tag) {
         if (directive.name instanceof RegExp) {
-            var regex = RegExp(directive.name, 'i');
+            var regex = RegExp(directive.name.source, 'i');
 
             return regex.test(tag);
         }
