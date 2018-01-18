@@ -29,11 +29,20 @@ function postHTMLParser(html, options) {
         var directives = options.directives || defaultDirectives;
         var last = bufArray.last();
 
+        var tagName;
         for (var i = 0; i < directives.length; i++) {
             var directive = directives[i];
             var directiveText = directive.start + data + directive.end;
+            var isDirective = false;
 
-            if (name.toLowerCase() === directive.name) {
+            tagName = name.toLowerCase();
+            if ((directive.name instanceof RegExp) && directive.name.test(tagName)) {
+                isDirective = true;
+            } else if (tagName === directive.name) {
+                isDirective = true;
+            }
+
+            if (isDirective) {
                 if (!last) {
                     results.push(directiveText);
                     return;

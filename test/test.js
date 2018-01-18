@@ -131,6 +131,15 @@ describe('PostHTML-Parser test', function() {
         expect(parser('<?php echo "Hello word"; ?>', customDirectives)).to.eql(['<?php echo "Hello word"; ?>']);
     });
 
+    it('should be parse regular expression directive', function() {
+        var customDirectives = {directives: [
+            {name: /\?(php|=).*/, start: '<', end: '>'}
+        ]};
+
+        expect(parser('<?php echo "Hello word"; ?>', customDirectives)).to.eql(['<?php echo "Hello word"; ?>']);
+        expect(parser('<?="Hello word"?>', customDirectives)).to.eql(['<?="Hello word"?>']);
+    });
+
     it('should be parse directives and tag', function() {
         var customDirectives = {directives: [
             {name: '!doctype', start: '<', end: '>'},
