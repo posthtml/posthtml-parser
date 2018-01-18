@@ -25,6 +25,20 @@ function postHTMLParser(html, options) {
         return this[this.length - 1];
     };
 
+    function isDirective(directive, tag) {
+        if (directive.name instanceof RegExp) {
+            var regex = RegExp(directive.name, 'i');
+
+            return regex.test(tag);
+        }
+
+        if (tag !== directive.name) {
+            return false;
+        }
+
+        return true;
+    }
+
     function parserDirective(name, data) {
         var directives = objectAssign(defaultDirectives, options.directives);
         var last = bufArray.last();
@@ -33,18 +47,9 @@ function postHTMLParser(html, options) {
         for (var i = 0; i < directives.length; i++) {
             var directive = directives[i];
             var directiveText = directive.start + data + directive.end;
-            var isDirective = false;
 
             tagName = name.toLowerCase();
-            if ((directive.name instanceof RegExp) && directive.name.test(tagName)) {
-                isDirective = true;
-            }
-
-            if (tagName === directive.name) {
-                isDirective = true;
-            }
-
-            if (isDirective) {
+            if (isDirective(directive, tagName)) {
                 if (!last) {
                     results.push(directiveText);
                     return;
