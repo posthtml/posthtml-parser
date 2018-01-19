@@ -43,13 +43,12 @@ function postHTMLParser(html, options) {
         var directives = [].concat(defaultDirectives, options.directives || []);
         var last = bufArray.last();
 
-        var tagName;
         for (var i = 0; i < directives.length; i++) {
             var directive = directives[i];
             var directiveText = directive.start + data + directive.end;
 
-            tagName = name.toLowerCase();
-            if (isDirective(directive, tagName)) {
+            name = name.toLowerCase();
+            if (isDirective(directive, name)) {
                 if (!last) {
                     results.push(directiveText);
                     return;
