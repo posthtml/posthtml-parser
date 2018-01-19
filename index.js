@@ -40,7 +40,7 @@ function postHTMLParser(html, options) {
     }
 
     function parserDirective(name, data) {
-        var directives = objectAssign(defaultDirectives, options.directives);
+        var directives = [].concat(defaultDirectives, options.directives || []);
         var last = bufArray.last();
 
         var tagName;
