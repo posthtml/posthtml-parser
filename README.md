@@ -82,7 +82,7 @@ Tag objects can contain three keys. The `tag` key takes the name of the tag as t
 ### `directives`
 Type: `Array`  
 Default: `[{name: '!doctype', start: '<', end: '>'}]`   
-Description: *Adds processing of custom directives*  
+Description: *Adds processing of custom directives. Note: The property ```name``` in custom directives can be ```String``` or ```RegExp``` type*  
 
 ## License
 
