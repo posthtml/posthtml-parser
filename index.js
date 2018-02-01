@@ -119,10 +119,11 @@ function parserWrapper() {
         return postHTMLParser(html, opt);
     }
 
-    if (arguments.length === 1 &&
-        arguments[0] !== null &&
-        typeof arguments[0] === 'object' &&
-        Array.isArray(arguments[0]) === false) {
+    if (
+      arguments.length === 1 &&
+      Boolean(arguments[0]) &&
+      arguments[0].constructor.name === 'Object'
+    ) {
         option = arguments[0];
         return parser;
     }
