@@ -20,5 +20,3 @@ declare namespace parserWrapper {
         end: string;
     }[];
 }
-
-
