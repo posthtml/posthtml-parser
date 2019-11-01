@@ -46,7 +46,7 @@ console.log(parser(html)) // Logs a PostHTML AST
     },
     content: [
         '\n    ',
-            {
+        {
             tag: 'span',
             attrs: {
                 class: 'animals__cat',
