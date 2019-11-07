@@ -1,9 +1,10 @@
 sudo: false
 language: node_js
 node_js:
-  - "4.1"
-  - "0.12"
-  - "0.10"
+  - "stable"
+  - "lts/*"
+  - 6
+  - 4
 
 env:
   global:
