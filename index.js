@@ -1,7 +1,6 @@
 'use strict';
 
 var Parser = require('htmlparser2/lib/Parser');
-var objectAssign = require('object-assign');
 
 /**
  * @see https://github.com/fb55/htmlparser2/wiki/Parser-options
@@ -64,7 +63,7 @@ function postHTMLParser(html, options) {
         Object.keys(attrs).forEach(function(key) {
             var obj = {};
                 obj[key] = attrs[key].replace(/&quot;/g, '"');
-            objectAssign(result, obj);
+            Object.assign(result, obj);
         });
 
         return result;
@@ -130,7 +129,7 @@ function parserWrapper() {
     var option;
 
     function parser(html) {
-        var opt = objectAssign(defaultOptions, option);
+        var opt = Object.assign(defaultOptions, option);
         return postHTMLParser(html, opt);
     }
 
