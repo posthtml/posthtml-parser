@@ -152,12 +152,16 @@ describe('PostHTML-Parser test', function() {
             ]
         };
 
-        var html = '<!doctype html><html><?php echo \"Hello word\"; ?></html>';
+        var html = '<!doctype html><header><?php echo \"Hello word\"; ?></header><body>{{%njk test %}}</body>';
         var tree = [
             '<!doctype html>',
             {
                 content: ['<?php echo \"Hello word\"; ?>'],
-                tag: 'html'
+                tag: 'header'
+            },
+            {
+                content: ['{{%njk test %}}'],
+                tag: 'body'
             }
         ];
 
