@@ -89,10 +89,8 @@ declare namespace parser {
 declare const parser: {
     defaultOptions: parser.DefaultOptions;
     defaultDirectives: parser.Directive[];
-    (options?: parser.Options): (
-        content: string,
-        options?: parser.Options
-    ) => parser.Tree;
+    
+    (options?: parser.Options): (content: string) => parser.Tree;
     (content: string, options?: parser.Options): parser.Tree;
 };
 
