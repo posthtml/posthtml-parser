@@ -129,7 +129,7 @@ function parserWrapper() {
     var option;
 
     function parser(html) {
-        var opt = Object.assign(defaultOptions, option);
+        var opt = Object.assign({}, defaultOptions, option);
         return postHTMLParser(html, opt);
     }
 
