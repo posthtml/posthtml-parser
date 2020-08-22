@@ -1,6 +1,6 @@
 {
   "name": "posthtml-parser",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Parse HTML/XML to PostHTMLTree",
   "keywords": [
     "html",
@@ -43,6 +43,7 @@
   "devDependencies": {
     "@commitlint/cli": "9.1.1",
     "@commitlint/config-angular": "^9.1.2",
+    "conventional-changelog-cli": "^2.0.34",
     "chai": "^4.2.0",
     "husky": "^4.2.5",
     "istanbul": "^0.4.0",
