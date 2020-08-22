@@ -17,7 +17,6 @@
   "scripts": {
     "version": "conventional-changelog -i changelog.md -s -r 0 && git add changelog.md && git commit -m \"build: update changelog\"",
     "test": "mocha",
-    "lint": "jshint . && jscs .",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": "posthtml/posthtml-parser",
