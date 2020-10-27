@@ -23,7 +23,7 @@ function postHTMLParser(html, options) {
 
   function isDirective({name}, tag) {
     if (name instanceof RegExp) {
-      const regex = RegExp(name.source, 'i');
+      const regex = new RegExp(name.source, 'i');
 
       return regex.test(tag);
     }
@@ -39,8 +39,7 @@ function postHTMLParser(html, options) {
     const directives = [].concat(defaultDirectives, options.directives || []);
     const last = bufArray.last();
 
-    for (let i = 0; i < directives.length; i++) {
-      const directive = directives[i];
+    for (const directive of directives) {
       const directiveText = directive.start + data + directive.end;
 
       name = name.toLowerCase();
@@ -50,7 +49,10 @@ function postHTMLParser(html, options) {
           return;
         }
 
-        last.content || (last.content = []);
+        if (last.content === undefined) {
+          last.content = [];
+        }
+
         last.content.push(directiveText);
       }
     }
@@ -59,9 +61,9 @@ function postHTMLParser(html, options) {
   function normalizeArributes(attrs) {
     const result = {};
     Object.keys(attrs).forEach(key => {
-      const obj = {};
-      obj[key] = attrs[key].replace(/&quot;/g, '"');
-      Object.assign(result, obj);
+      const object = {};
+      object[key] = attrs[key].replace(/&quot;/g, '"');
+      Object.assign(result, object);
     });
 
     return result;
@@ -78,13 +80,16 @@ function postHTMLParser(html, options) {
         return;
       }
 
-      last.content || (last.content = []);
+      if (last.content === undefined) {
+        last.content = [];
+      }
+
       last.content.push(comment);
     },
     onopentag(tag, attrs) {
       const buf = {tag};
 
-      if (Object.keys(attrs).length) {
+      if (Object.keys(attrs).length > 0) {
         buf.attrs = normalizeArributes(attrs);
       }
 
@@ -93,7 +98,7 @@ function postHTMLParser(html, options) {
     onclosetag() {
       const buf = bufArray.pop();
 
-      if (!bufArray.length) {
+      if (!bufArray.length > 0) {
         results.push(buf);
         return;
       }
@@ -113,13 +118,15 @@ function postHTMLParser(html, options) {
         return;
       }
 
-      if (last.content && last.content.length && typeof last.content[last.content.length - 1] === 'string') {
-        last.content[last.content.length - 1] = `${last.content[last.content.length - 1]}${text}`
-        return
+      if (last.content && last.content.length > 0 && typeof last.content[last.content.length - 1] === 'string') {
+        last.content[last.content.length - 1] = `${last.content[last.content.length - 1]}${text}`;
+        return;
       }
 
+      if (last.content === undefined) {
+        last.content = [];
+      }
 
-      last.content || (last.content = []);
       last.content.push(text);
     }
   }, options || defaultOptions);
@@ -134,7 +141,7 @@ function parserWrapper(...args) {
   let option;
 
   function parser(html) {
-    const opt = Object.assign({}, defaultOptions, option);
+    const opt = {...defaultOptions, ...option};
     return postHTMLParser(html, opt);
   }
 
