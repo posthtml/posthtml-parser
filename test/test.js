@@ -204,4 +204,18 @@ describe('PostHTML-Parser test', function() {
             { tag: 'mySuperTag' }
         ]);
     });
+
+    it('should be parse simple contents are split with "<" in comment', function() {
+        const html = `<a> /* width < 800px */ <hr /> test</a>`
+        expect(parser(html)).to.eql([
+            { tag: 'a', content: [' /* width < 800px */ ', {tag: 'hr'}, ' test'] }
+        ]);
+    });
+
+    it('should be parse style contents are split with "<" in comment', function() {
+        const html = `<style> /* width < 800px */ @media (max-width: 800px) { /* selectors */} </style>`
+        expect(parser(html)).to.eql([
+            { tag: 'style', content: [' /* width < 800px */ @media (max-width: 800px) { /* selectors */} '] }
+        ]);
+    });
 });
