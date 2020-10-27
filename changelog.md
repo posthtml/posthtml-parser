@@ -1,11 +1,35 @@
+## <small>0.5.1 (2020-10-27)</small>
+
+* style: 2 space, close issue #33 ([cdd7dbd](https://github.com/posthtml/posthtml-parser/commit/cdd7dbd)), closes [#33](https://github.com/posthtml/posthtml-parser/issues/33)
+* style: after lint ([23dd2a0](https://github.com/posthtml/posthtml-parser/commit/23dd2a0))
+* build: change eslint to xo ([5233a43](https://github.com/posthtml/posthtml-parser/commit/5233a43))
+* build: change lint to eslint ([f6eef50](https://github.com/posthtml/posthtml-parser/commit/f6eef50))
+* build: update bump version script ([7b7cfbf](https://github.com/posthtml/posthtml-parser/commit/7b7cfbf))
+* build: update dep dev ([8601e40](https://github.com/posthtml/posthtml-parser/commit/8601e40))
+* perf: concate with prev content string ([fe7ddb0](https://github.com/posthtml/posthtml-parser/commit/fe7ddb0))
+* perf: downgrade code for old node ([b160b9d](https://github.com/posthtml/posthtml-parser/commit/b160b9d))
+* perf: migrate to parser v5 ([c2349ad](https://github.com/posthtml/posthtml-parser/commit/c2349ad))
+* ci: change nyc to c8 ([1638a07](https://github.com/posthtml/posthtml-parser/commit/1638a07))
+* ci: forgot config for c8 ([ba45ba6](https://github.com/posthtml/posthtml-parser/commit/ba45ba6))
+* ci: migrate to github action from travis ([05e3768](https://github.com/posthtml/posthtml-parser/commit/05e3768))
+* test: contents are split with '<' in comment, issue #18 ([cbeb319](https://github.com/posthtml/posthtml-parser/commit/cbeb319)), closes [#18](https://github.com/posthtml/posthtml-parser/issues/18)
+* test: contents are split with '<' in comment, issue #45 ([74169cd](https://github.com/posthtml/posthtml-parser/commit/74169cd)), closes [#45](https://github.com/posthtml/posthtml-parser/issues/45)
+* fix: contents are split with '<' in comment, close #18, close #45 ([8e64082](https://github.com/posthtml/posthtml-parser/commit/8e64082)), closes [#18](https://github.com/posthtml/posthtml-parser/issues/18) [#45](https://github.com/posthtml/posthtml-parser/issues/45)
+* refactor: migrate to es-next syntax ([d89bf85](https://github.com/posthtml/posthtml-parser/commit/d89bf85))
+* docs: simple update ([0c10d9d](https://github.com/posthtml/posthtml-parser/commit/0c10d9d))
+
+
+
 ## 0.5.0 (2020-08-22)
 
-* revert: incorrect changes ([0601fbd](https://github.com/posthtml/posthtml-parser/commit/0601fbd))
-* style: lintstage lint update ([43398d5](https://github.com/posthtml/posthtml-parser/commit/43398d5))
+* 0.5.0 ([be05a9f](https://github.com/posthtml/posthtml-parser/commit/be05a9f))
 * build: forgot conventional-changelog-cli ([8ff437a](https://github.com/posthtml/posthtml-parser/commit/8ff437a))
+* build: update changelog ([d0a07dc](https://github.com/posthtml/posthtml-parser/commit/d0a07dc))
 * build: update dep dev ([f8efe55](https://github.com/posthtml/posthtml-parser/commit/f8efe55))
 * build: update lint/build system ([54adc49](https://github.com/posthtml/posthtml-parser/commit/54adc49))
 * build(deps): bump handlebars from 4.0.11 to 4.5.3 ([8773f14](https://github.com/posthtml/posthtml-parser/commit/8773f14))
+* revert: incorrect changes ([0601fbd](https://github.com/posthtml/posthtml-parser/commit/0601fbd))
+* style: lintstage lint update ([43398d5](https://github.com/posthtml/posthtml-parser/commit/43398d5))
 * ci: drop old node support ([cf95d62](https://github.com/posthtml/posthtml-parser/commit/cf95d62))
 * ci: drop support old node ([d415fb9](https://github.com/posthtml/posthtml-parser/commit/d415fb9))
 * fix: incorrect merge defaultOptions, close #47 ([11ba7fb](https://github.com/posthtml/posthtml-parser/commit/11ba7fb)), closes [#47](https://github.com/posthtml/posthtml-parser/issues/47)
