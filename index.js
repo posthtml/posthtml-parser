@@ -1,13 +1,11 @@
-'use strict';
-
-var { Parser } = require('htmlparser2');
+const { Parser } = require('htmlparser2');
 
 /**
  * @see https://github.com/fb55/htmlparser2/wiki/Parser-options
  */
-var defaultOptions = {lowerCaseTags: false, lowerCaseAttributeNames: false};
+const defaultOptions = {lowerCaseTags: false, lowerCaseAttributeNames: false};
 
-var defaultDirectives = [{name: '!doctype', start: '<', end: '>'}];
+const defaultDirectives = [{name: '!doctype', start: '<', end: '>'}];
 
 /**
  * Parse html to PostHTMLTree
@@ -16,21 +14,21 @@ var defaultDirectives = [{name: '!doctype', start: '<', end: '>'}];
  * @return {PostHTMLTree}
  */
 function postHTMLParser(html, options) {
-    var bufArray = [],
-        results = [];
+    const bufArray = [];
+    const results = [];
 
     bufArray.last = function() {
         return this[this.length - 1];
     };
 
-    function isDirective(directive, tag) {
-        if (directive.name instanceof RegExp) {
-            var regex = RegExp(directive.name.source, 'i');
+    function isDirective({name}, tag) {
+        if (name instanceof RegExp) {
+            const regex = RegExp(name.source, 'i');
 
             return regex.test(tag);
         }
 
-        if (tag !== directive.name) {
+        if (tag !== name) {
             return false;
         }
 
@@ -38,12 +36,12 @@ function postHTMLParser(html, options) {
     }
 
     function parserDirective(name, data) {
-        var directives = [].concat(defaultDirectives, options.directives || []);
-        var last = bufArray.last();
+        const directives = [].concat(defaultDirectives, options.directives || []);
+        const last = bufArray.last();
 
-        for (var i = 0; i < directives.length; i++) {
-            var directive = directives[i];
-            var directiveText = directive.start + data + directive.end;
+        for (let i = 0; i < directives.length; i++) {
+            const directive = directives[i];
+            const directiveText = directive.start + data + directive.end;
 
             name = name.toLowerCase();
             if (isDirective(directive, name)) {
@@ -59,21 +57,21 @@ function postHTMLParser(html, options) {
     }
 
     function normalizeArributes(attrs) {
-        var result = {};
-        Object.keys(attrs).forEach(function(key) {
-            var obj = {};
-                obj[key] = attrs[key].replace(/&quot;/g, '"');
+        const result = {};
+        Object.keys(attrs).forEach(key => {
+            const obj = {};
+            obj[key] = attrs[key].replace(/&quot;/g, '"');
             Object.assign(result, obj);
         });
 
         return result;
     }
 
-    var parser = new Parser({
+    const parser = new Parser({
         onprocessinginstruction: parserDirective,
-        oncomment: function(data) {
-            var comment = '<!--' + data + '-->',
-                last = bufArray.last();
+        oncomment(data) {
+            const comment = `<!--${data}-->`;
+            const last = bufArray.last();
 
             if (!last) {
                 results.push(comment);
@@ -83,8 +81,8 @@ function postHTMLParser(html, options) {
             last.content || (last.content = []);
             last.content.push(comment);
         },
-        onopentag: function(tag, attrs) {
-            var buf = { tag: tag };
+        onopentag(tag, attrs) {
+            const buf = { tag };
 
             if (Object.keys(attrs).length) {
                 buf.attrs = normalizeArributes(attrs);
@@ -92,23 +90,23 @@ function postHTMLParser(html, options) {
 
             bufArray.push(buf);
         },
-        onclosetag: function() {
-            var buf = bufArray.pop();
+        onclosetag() {
+            const buf = bufArray.pop();
 
             if (!bufArray.length) {
                 results.push(buf);
                 return;
             }
 
-            var last = bufArray.last();
+            const last = bufArray.last();
             if (!Array.isArray(last.content)) {
                 last.content = [];
             }
 
             last.content.push(buf);
         },
-        ontext: function(text) {
-            var last = bufArray.last();
+        ontext(text) {
+            const last = bufArray.last();
             if (!last) {
                 results.push(text);
                 return;
@@ -125,25 +123,25 @@ function postHTMLParser(html, options) {
     return results;
 }
 
-function parserWrapper() {
-    var option;
+function parserWrapper(...args) {
+    let option;
 
     function parser(html) {
-        var opt = Object.assign({}, defaultOptions, option);
+        const opt = Object.assign({}, defaultOptions, option);
         return postHTMLParser(html, opt);
     }
 
     if (
-      arguments.length === 1 &&
-      Boolean(arguments[0]) &&
-      arguments[0].constructor.name === 'Object'
+        args.length === 1 &&
+        Boolean(args[0]) &&
+        args[0].constructor.name === 'Object'
     ) {
-        option = arguments[0];
+        option = args[0];
         return parser;
     }
 
-    option = arguments[1];
-    return parser(arguments[0]);
+    option = args[1];
+    return parser(args[0]);
 }
 
 module.exports = parserWrapper;

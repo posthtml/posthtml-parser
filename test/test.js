@@ -1,27 +1,25 @@
-var parser = require('..');
-var parserWithMockedDeps = require('rewire')('..');
-var describe = require('mocha').describe;
-var it = require('mocha').it;
-var beforeEach = require('mocha').beforeEach;
-var chai = require('chai');
-var sinon = require('sinon');
-var expect = chai.expect;
+const parser = require('..');
+const parserWithMockedDeps = require('rewire')('..');
+const describe = require('mocha').describe;
+const it = require('mocha').it;
+const beforeEach = require('mocha').beforeEach;
+const chai = require('chai');
+const sinon = require('sinon');
+const expect = chai.expect;
 chai.use(require('sinon-chai'));
 
 describe('PostHTML-Parser test', function() {
     describe('Call signatures', function() {
-        var customOptions = {lowerCaseTags: false, lowerCaseAttributeNames: false};
-        var MockedHtmlParser2;
-        var parserSpy;
+        const customOptions = {lowerCaseTags: false, lowerCaseAttributeNames: false};
+        let MockedHtmlParser2;
+        let parserSpy;
 
         beforeEach(function() {
-            // jscs:disable requireFunctionDeclarations
             MockedHtmlParser2 = function() {};
             MockedHtmlParser2.prototype = {
-                write: function() {},
-                end: function() {}
+                write() {},
+                end() {}
             };
-            // jscs:enable requireFunctionDeclarations
 
             // Create spy on mocked htmlparser2 to collect call stats
             parserSpy = sinon.spy(MockedHtmlParser2);
@@ -43,7 +41,7 @@ describe('PostHTML-Parser test', function() {
         });
 
         it('should use custom params when called as factory function', function() {
-            var factory = parserWithMockedDeps(customOptions);
+            const factory = parserWithMockedDeps(customOptions);
             expect(factory).to.be.a('function');
             expect(factory('')).to.be.an('array');
             expect(parserSpy.firstCall.args[1]).to.eql(customOptions);
@@ -64,7 +62,23 @@ describe('PostHTML-Parser test', function() {
     });
 
     it('should be parse tag with escape object in attribute', function() {
-        var htmlString = '<button data-bem="{&quot;button&quot;:{&quot;checkedView&quot;:&quot;extra&quot;}}"' +
+        const htmlString = '<button data-bem="{&quot;button&quot;:{&quot;checkedView&quot;:&quot;extra&quot;}}"' +
+            ' type="submit"></button>';
+        const tree = [
+            {
+                tag: 'button',
+                attrs: {
+                    type: 'submit',
+                    'data-bem': '{"button":{"checkedView":"extra"}}'
+                }
+            }
+        ];
+
+        expect(parser(htmlString)).to.eql(tree);
+    });
+
+    it.skip('should be parse tag with object in attribute data witchout escape', function() {
+        var htmlString = '<button data-bem="{"button":{"checkedView":"extra"}}"' +
             ' type="submit"></button>';
         // console.log(htmlString);
         var tree = [
@@ -80,40 +94,23 @@ describe('PostHTML-Parser test', function() {
         expect(parser(htmlString)).to.eql(tree);
     });
 
-    // it('should be parse tag with object in attribute data witchout escape', function() {
-    //     var htmlString = '<button data-bem="{"button":{"checkedView":"extra"}}"' +
-    //         ' type="submit"></button>';
-    //     // console.log(htmlString);
-    //     var tree = [
-    //         {
-    //             tag: 'button',
-    //             attrs: {
-    //                 type: 'submit',
-    //                 'data-bem': '{"button":{"checkedView":"extra"}}'
-    //             }
-    //         }
-    //     ];
+    it.skip('should be parse tag with object in attribute data escape', function() {
+        var json = JSON.stringify({button: {checkedView:'extra'}});
+        var htmlString = '<button data-bem="' + json + '"' +
+            ' type="submit"></button>';
+        // console.log(htmlString);
+        var tree = [
+            {
+                tag: 'button',
+                attrs: {
+                    type: 'submit',
+                    'data-bem': '{"button":{"checkedView":"extra"}}'
+                }
+            }
+        ];
 
-    //     expect(parser(htmlString)).to.eql(tree);
-    // });
-
-    // it('should be parse tag with object in attribute data escape', function() {
-    //     var json = JSON.stringify({button: {checkedView:'extra'}});
-    //     var htmlString = '<button data-bem="' + json + '"' +
-    //         ' type="submit"></button>';
-    //     // console.log(htmlString);
-    //     var tree = [
-    //         {
-    //             tag: 'button',
-    //             attrs: {
-    //                 type: 'submit',
-    //                 'data-bem': '{"button":{"checkedView":"extra"}}'
-    //             }
-    //         }
-    //     ];
-
-    //     expect(parser(htmlString)).to.eql(tree);
-    // });
+        expect(parser(htmlString)).to.eql(tree);
+    });
 
     it('should be parse comment in content', function() {
         expect(parser('<div><!--comment--></div>')).to.eql([{tag: 'div', content: ['<!--comment-->']}]);
@@ -124,7 +121,7 @@ describe('PostHTML-Parser test', function() {
     });
 
     it('should be parse directive', function() {
-        var options = {
+        const options = {
             directives: [
                 { name: '?php', start: '<', end: '>' }
             ]
@@ -134,7 +131,7 @@ describe('PostHTML-Parser test', function() {
     });
 
     it('should be parse regular expression directive', function() {
-        var options = {
+        const options = {
             directives: [
                 { name: /\?(php|=).*/, start: '<', end: '>' }
             ]
@@ -145,15 +142,15 @@ describe('PostHTML-Parser test', function() {
     });
 
     it('should be parse directives and tag', function() {
-        var options = {
+        const options = {
             directives: [
                 { name: '!doctype', start: '<', end: '>' },
                 { name: '?php', start: '<', end: '>' }
             ]
         };
 
-        var html = '<!doctype html><header><?php echo \"Hello word\"; ?></header><body>{{%njk test %}}</body>';
-        var tree = [
+        const html = '<!doctype html><header><?php echo \"Hello word\"; ?></header><body>{{%njk test %}}</body>';
+        const tree = [
             '<!doctype html>',
             {
                 content: ['<?php echo \"Hello word\"; ?>'],
