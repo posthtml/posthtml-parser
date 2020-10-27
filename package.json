@@ -15,7 +15,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "version": "conventional-changelog -i changelog.md -s -r 0 && git add changelog.md && git commit -m \"build: update changelog\"",
+    "version": "conventional-changelog -i changelog.md -s -r 0 && git add changelog.md",
     "test": "mocha",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
