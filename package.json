@@ -1,6 +1,6 @@
 {
   "name": "posthtml-parser",
-  "version": "0.4.2",
+  "version": "0.5.1",
   "description": "Parse HTML/XML to PostHTMLTree",
   "keywords": [
     "html",
@@ -11,31 +11,54 @@
   ],
   "main": "index.js",
   "types": "index.d.ts",
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "scripts": {
-    "test": "npm run lint && npm run coverage",
-    "lint": "jshint . && jscs .",
-    "coverage": "istanbul cover --report text --report html --report lcov node_modules/mocha/bin/_mocha",
-    "preversion": "npm test",
-    "postversion": "git push && git push --tags && rm -rf coverage"
+    "version": "conventional-changelog -i changelog.md -s -r 0 && git add changelog.md",
+    "test": "xo && c8 mocha"
   },
   "repository": "posthtml/posthtml-parser",
   "author": "Ivan Voischev <voischev.ivan@ya.ru>",
+  "contributors": [
+    {
+      "name": "Ivan Voischev",
+      "email": "voischev.ivan@ya.ru"
+    },
+    {
+      "name": "Ivan Demidov",
+      "email": "scrum@list.ru"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/posthtml/posthtml-parser/issues"
   },
   "homepage": "https://github.com/posthtml/posthtml-parser#readme",
   "dependencies": {
-    "htmlparser2": "^3.9.2"
+    "htmlparser2": "^5.0.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-angular": "^11.0.0",
+    "c8": "^7.3.5",
     "chai": "^4.2.0",
-    "istanbul": "^0.4.0",
-    "jscs": "^3.0.7",
-    "jshint": "^2.10.3",
-    "mocha": "^6.2.2",
-    "rewire": "^4.0.1",
-    "sinon": "^7.5.0",
-    "sinon-chai": "^3.3.0"
+    "conventional-changelog-cli": "^2.0.34",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.5.0",
+    "mocha": "^8.2.0",
+    "rewire": "^5.0.0",
+    "rimraf": "^3.0.0",
+    "sinon": "^9.2.0",
+    "sinon-chai": "^3.5.0",
+    "xo": "^0.34.1"
+  },
+  "funding": {
+    "type": "patreon",
+    "url": "https://opencollective.com/posthtml"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/posthtml"
   }
 }
