@@ -1,6 +1,6 @@
 'use strict';
 
-var Parser = require('htmlparser2/lib/Parser');
+var { Parser } = require('htmlparser2');
 
 /**
  * @see https://github.com/fb55/htmlparser2/wiki/Parser-options
