@@ -1,6 +1,6 @@
 {
   "name": "posthtml-parser",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Parse HTML/XML to PostHTMLTree",
   "keywords": [
     "html",
