@@ -114,7 +114,7 @@ function postHTMLParser(html, options) {
       }
 
       if (last.content && last.content.length && typeof last.content[last.content.length - 1] === 'string') {
-        last.content[last.content.length - 1] = last.content[last.content.length - 1] + text
+        last.content[last.content.length - 1] = `${last.content[last.content.length - 1]}${text}`
         return
       }
 
