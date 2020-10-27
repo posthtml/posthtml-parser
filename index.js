@@ -107,10 +107,17 @@ function postHTMLParser(html, options) {
         },
         ontext(text) {
             const last = bufArray.last();
+
             if (!last) {
                 results.push(text);
                 return;
             }
+
+            if (last.content?.length && typeof last.content[last.content.length - 1] === 'string') {
+                last.content[last.content.length - 1] = last.content[last.content.length - 1] + text
+                return
+            }
+
 
             last.content || (last.content = []);
             last.content.push(text);
