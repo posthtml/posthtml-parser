@@ -222,4 +222,11 @@ describe('PostHTML-Parser test', function () {
       {tag: 'style', content: [' /* width < 800px */ @media (max-width: 800px) { /* selectors */} ']}
     ]);
   });
+
+  it('should be parse script contents are split with "<" in comment', function () {
+    const html = `<script> var str = 'hey <form'; if (!str.match(new RegExp('<(form|iframe)', 'g'))) { /* ... */ }</script>`
+    expect(parser(html)).to.eql([
+      {tag: 'script', content: [' var str = \'hey <form\'; if (!str.match(new RegExp(\'<(form|iframe)\', \'g\'))) { /* ... */ }']}
+    ]);
+  });
 });
