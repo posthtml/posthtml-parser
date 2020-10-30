@@ -229,4 +229,9 @@ describe('PostHTML-Parser test', () => {
       {tag: 'script', content: [' var str = \'hey <form\'; if (!str.match(new RegExp(\'<(form|iframe)\', \'g\'))) { /* ... */ }']}
     ]);
   });
+
+  it('should be not converting html entity name', () => {
+    const html = '&zwnj;&nbsp;&copy;';
+    expect(parser(html)).to.eql(['&zwnj;&nbsp;&copy;']);
+  });
 });
