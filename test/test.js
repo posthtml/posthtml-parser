@@ -10,7 +10,7 @@ chai.use(require('sinon-chai'));
 
 describe('PostHTML-Parser test', () => {
   describe('Call signatures', () => {
-    const customOptions = {lowerCaseTags: false, lowerCaseAttributeNames: false};
+    const customOptions = {lowerCaseTags: false, lowerCaseAttributeNames: false, decodeEntities: false};
     let MockedHtmlParser2;
     let parserSpy;
 

@@ -3,7 +3,7 @@ const {Parser} = require('htmlparser2');
 /**
  * @see https://github.com/fb55/htmlparser2/wiki/Parser-options
  */
-const defaultOptions = {lowerCaseTags: false, lowerCaseAttributeNames: false};
+const defaultOptions = {lowerCaseTags: false, lowerCaseAttributeNames: false, decodeEntities: false};
 
 const defaultDirectives = [{name: '!doctype', start: '<', end: '>'}];
 
