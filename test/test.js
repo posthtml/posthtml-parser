@@ -10,7 +10,7 @@ chai.use(require('sinon-chai'));
 
 describe('PostHTML-Parser test', () => {
   describe('Call signatures', () => {
-    const customOptions = {lowerCaseTags: false, lowerCaseAttributeNames: false};
+    const customOptions = {lowerCaseTags: false, lowerCaseAttributeNames: false, decodeEntities: false};
     let MockedHtmlParser2;
     let parserSpy;
 
@@ -228,5 +228,10 @@ describe('PostHTML-Parser test', () => {
     expect(parser(html)).to.eql([
       {tag: 'script', content: [' var str = \'hey <form\'; if (!str.match(new RegExp(\'<(form|iframe)\', \'g\'))) { /* ... */ }']}
     ]);
+  });
+
+  it('should be not converting html entity name', () => {
+    const html = '&zwnj;&nbsp;&copy;';
+    expect(parser(html)).to.eql(['&zwnj;&nbsp;&copy;']);
   });
 });
