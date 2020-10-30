@@ -1,5 +1,13 @@
+## <small>0.5.2 (2020-10-30)</small>
+
+* fix: converting html entity name, close #51 ([4a8be73](https://github.com/posthtml/posthtml-parser/commit/4a8be73)), closes [#51](https://github.com/posthtml/posthtml-parser/issues/51)
+* test: converting html entity name, issue #51 ([6bd5975](https://github.com/posthtml/posthtml-parser/commit/6bd5975)), closes [#51](https://github.com/posthtml/posthtml-parser/issues/51)
+
+
+
 ## <small>0.5.1 (2020-10-27)</small>
 
+* 0.5.1 ([b6b4a8b](https://github.com/posthtml/posthtml-parser/commit/b6b4a8b))
 * style: 2 space, close issue #33 ([cdd7dbd](https://github.com/posthtml/posthtml-parser/commit/cdd7dbd)), closes [#33](https://github.com/posthtml/posthtml-parser/issues/33)
 * style: after lint ([23dd2a0](https://github.com/posthtml/posthtml-parser/commit/23dd2a0))
 * build: change eslint to xo ([5233a43](https://github.com/posthtml/posthtml-parser/commit/5233a43))
