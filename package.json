@@ -51,7 +51,7 @@
     "rimraf": "^3.0.0",
     "sinon": "^9.2.0",
     "sinon-chai": "^3.5.0",
-    "xo": "^0.34.1"
+    "xo": "^0.30.0"
   },
   "funding": {
     "type": "patreon",
