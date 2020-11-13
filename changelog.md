@@ -1,5 +1,13 @@
+## <small>0.5.3 (2020-11-13)</small>
+
+* build: down grade xo is broken ([9631e7d](https://github.com/posthtml/posthtml-parser/commit/9631e7d))
+* fix: downgrade htmlpareser2 to 3* version, issue #53 ([7353f6b](https://github.com/posthtml/posthtml-parser/commit/7353f6b)), closes [#53](https://github.com/posthtml/posthtml-parser/issues/53)
+
+
+
 ## <small>0.5.2 (2020-10-30)</small>
 
+* 0.5.2 ([c8641cd](https://github.com/posthtml/posthtml-parser/commit/c8641cd))
 * fix: converting html entity name, close #51 ([4a8be73](https://github.com/posthtml/posthtml-parser/commit/4a8be73)), closes [#51](https://github.com/posthtml/posthtml-parser/issues/51)
 * test: converting html entity name, issue #51 ([6bd5975](https://github.com/posthtml/posthtml-parser/commit/6bd5975)), closes [#51](https://github.com/posthtml/posthtml-parser/issues/51)
 
