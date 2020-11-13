@@ -1,5 +1,12 @@
+## 0.6.0 (2020-11-13)
+
+* refactor: update htmlparser2 to version 5 ([58258b4](https://github.com/posthtml/posthtml-parser/commit/58258b4))
+
+
+
 ## <small>0.5.3 (2020-11-13)</small>
 
+* 0.5.3 ([88475c2](https://github.com/posthtml/posthtml-parser/commit/88475c2))
 * build: down grade xo is broken ([9631e7d](https://github.com/posthtml/posthtml-parser/commit/9631e7d))
 * fix: downgrade htmlpareser2 to 3* version, issue #53 ([7353f6b](https://github.com/posthtml/posthtml-parser/commit/7353f6b)), closes [#53](https://github.com/posthtml/posthtml-parser/issues/53)
 
