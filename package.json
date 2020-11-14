@@ -1,6 +1,6 @@
 {
   "name": "posthtml-parser",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "Parse HTML/XML to PostHTMLTree",
   "keywords": [
     "html",
@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/posthtml/posthtml-parser#readme",
   "dependencies": {
-    "htmlparser2": "^3.9.2"
+    "htmlparser2": "^5.0.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
