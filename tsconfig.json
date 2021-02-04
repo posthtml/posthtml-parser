@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
   "target": "es2018",
-  "lib": ["es2018"],
-  "module": "commonjs",
+  "lib": ["ESNext"],
   "esModuleInterop": true,
   "moduleResolution": "node",
   "strict": true,
