@@ -25,7 +25,7 @@
   },
   "scripts": {
     "version": "conventional-changelog -i changelog.md -s -r 0 && git add changelog.md",
-    "build": "rm -rf dist && tsup src/*.ts --format cjs --dts --minify",
+    "build": "rm -rf dist && tsup src/*.ts --format cjs --minify",
     "dev": "npm run build -- --watch",
     "test": "xo && c8 ava",
     "pretest": "clinton"
