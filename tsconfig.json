@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+  "target": "es2019",
+  "lib": ["ESNext"],
+  "module": "esnext",
+  "esModuleInterop": true,
+  "moduleResolution": "node",
+  "strict": true,
+  "strictNullChecks": true
+  }
+}
