@@ -1,5 +1,5 @@
 import {Parser, ParserOptions} from 'htmlparser2';
-import {Directive, Node, Options, Attributes} from '../types';
+import {Directive, Node, Options, Attributes} from '../types/index.d';
 
 const defaultOptions: ParserOptions = {
   lowerCaseTags: false,
@@ -15,7 +15,7 @@ const defaultDirectives: Directive[] = [
   }
 ];
 
-export default (html: string, options: Options = {}): Node[] => {
+const parser = (html: string, options: Options = {}): Node[] => {
   const bufArray: Node[] = [];
   const results: Node[] = [];
 
@@ -160,3 +160,5 @@ export default (html: string, options: Options = {}): Node[] => {
 
   return results;
 };
+
+export default parser;
