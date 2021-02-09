@@ -1,5 +1,22 @@
+## 0.7.0 (2021-02-09)
+
+* build: default build cjs ([41b7b25](https://github.com/posthtml/posthtml-parser/commit/41b7b25))
+* build: not generate dts ([662f8d9](https://github.com/posthtml/posthtml-parser/commit/662f8d9))
+* build: perf config for ts ([a3b5bc4](https://github.com/posthtml/posthtml-parser/commit/a3b5bc4))
+* build: refactor builder/lint/test system ([baa7bcc](https://github.com/posthtml/posthtml-parser/commit/baa7bcc))
+* build(deps): bump ini from 1.3.5 to 1.3.8 ([471a77f](https://github.com/posthtml/posthtml-parser/commit/471a77f))
+* docs: default import description ([c824343](https://github.com/posthtml/posthtml-parser/commit/c824343))
+* perf: export default declare ([eb63940](https://github.com/posthtml/posthtml-parser/commit/eb63940))
+* perf: target to node 10 ([3f0a707](https://github.com/posthtml/posthtml-parser/commit/3f0a707))
+* style: after update xo ([dc66abe](https://github.com/posthtml/posthtml-parser/commit/dc66abe))
+* test: rewrite to typscript ([63a3415](https://github.com/posthtml/posthtml-parser/commit/63a3415))
+* refactor: rewrite to typscript ([b1450a8](https://github.com/posthtml/posthtml-parser/commit/b1450a8))
+
+
+
 ## 0.6.0 (2020-11-13)
 
+* 0.6.0 ([cf98487](https://github.com/posthtml/posthtml-parser/commit/cf98487))
 * refactor: update htmlparser2 to version 5 ([58258b4](https://github.com/posthtml/posthtml-parser/commit/58258b4))
 
 

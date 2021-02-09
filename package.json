@@ -1,6 +1,6 @@
 {
   "name": "posthtml-parser",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Parse HTML/XML to PostHTMLTree",
   "license": "MIT",
   "repository": "posthtml/posthtml-parser",
