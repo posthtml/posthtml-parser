@@ -22,9 +22,10 @@ $ npm install posthtml-parser
 </a>
 ```
 ```js
-const parser = require('posthtml-parser')
-const fs = require('fs')
-const html = fs.readFileSync('path/to/input.html').toString()
+import parser from 'posthtml-parser'
+import fs from 'fs'
+
+const html = fs.readFileSync('path/to/input.html', 'utf-8')
 
 console.log(parser(html)) // Logs a PostHTML AST
 ```

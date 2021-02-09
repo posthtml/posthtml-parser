@@ -1,3 +1,4 @@
 {
-  "reporter": ["lcov", "text"]
+  "reporter": ["lcov", "text"],
+  "extension": [".js"]
 }
