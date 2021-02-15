@@ -17,7 +17,7 @@ export type Options = {
 export type Node = NodeText | NodeTag;
 export type NodeText = string;
 export type NodeTag = {
-  tag: string;
+  tag?: string | boolean;
   attrs?: Attributes;
   content?: Node[];
 };
