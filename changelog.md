@@ -1,5 +1,12 @@
+## <small>0.7.1 (2021-02-15)</small>
+
+* perf: tag name type ([60ec0c1](https://github.com/posthtml/posthtml-parser/commit/60ec0c1))
+
+
+
 ## 0.7.0 (2021-02-09)
 
+* 0.7.0 ([5887ed4](https://github.com/posthtml/posthtml-parser/commit/5887ed4))
 * build: default build cjs ([41b7b25](https://github.com/posthtml/posthtml-parser/commit/41b7b25))
 * build: not generate dts ([662f8d9](https://github.com/posthtml/posthtml-parser/commit/662f8d9))
 * build: perf config for ts ([a3b5bc4](https://github.com/posthtml/posthtml-parser/commit/a3b5bc4))
