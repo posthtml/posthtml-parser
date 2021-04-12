@@ -68,9 +68,27 @@ test.skip('should be parse tag with object in attribute data escape', t => {
   t.deepEqual(tree, expected);
 });
 
-test('should be parse comment in content', t => {
+test('should be parse isolated comment', t => {
   const tree = parser('<div><!--comment--></div>');
   const expected = [{tag: 'div', content: ['<!--comment-->']}];
+  t.deepEqual(tree, expected);
+});
+
+test('should be parse comment before text content', t => {
+  const tree = parser('<div><!--comment-->Text after comment</div>');
+  const expected = [{tag: 'div', content: ['<!--comment-->', 'Text after comment']}];
+  t.deepEqual(tree, expected);
+});
+
+test('should be parse comment after text content', t => {
+  const tree = parser('<div>Text before comment.<!--comment--></div>');
+  const expected = [{tag: 'div', content: ['Text before comment.', '<!--comment-->']}];
+  t.deepEqual(tree, expected);
+});
+
+test('should be parse comment in the middle of text content', t => {
+  const tree = parser('<div>Text surrounding <!--comment--> a comment.</div>');
+  const expected = [{tag: 'div', content: ['Text surrounding ', '<!--comment-->', ' a comment.']}];
   t.deepEqual(tree, expected);
 });
 

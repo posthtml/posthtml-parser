@@ -133,7 +133,7 @@ const parser = (html: string, options: Options = {}): Node[] => {
     if (typeof last === 'object') {
       if (last.content && last.content.length > 0) {
         const lastContentNode = last.content[last.content.length - 1];
-        if (typeof lastContentNode === 'string') {
+        if (typeof lastContentNode === 'string' && !lastContentNode.startsWith('<!--')) {
           last.content[last.content.length - 1] = `${lastContentNode}${text}`;
           return;
         }
