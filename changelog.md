@@ -1,5 +1,13 @@
+## <small>0.7.2 (2021-04-12)</small>
+
+* fix: correctly parse text content after comments ([818e2f5](https://github.com/posthtml/posthtml-parser/commit/818e2f5))
+* build(deps): bump y18n from 4.0.0 to 4.0.1 ([6b52ac1](https://github.com/posthtml/posthtml-parser/commit/6b52ac1))
+
+
+
 ## <small>0.7.1 (2021-02-15)</small>
 
+* 0.7.1 ([86a7954](https://github.com/posthtml/posthtml-parser/commit/86a7954))
 * perf: tag name type ([60ec0c1](https://github.com/posthtml/posthtml-parser/commit/60ec0c1))
 
 
