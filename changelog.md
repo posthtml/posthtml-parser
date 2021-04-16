@@ -1,5 +1,13 @@
+## 0.8.0 (2021-04-16)
+
+* ci: drop support for node 10 (found not to be working) ([585d552](https://github.com/posthtml/posthtml-parser/commit/585d552))
+* build: add prepare script ([1dc46fc](https://github.com/posthtml/posthtml-parser/commit/1dc46fc))
+
+
+
 ## <small>0.7.2 (2021-04-12)</small>
 
+* 0.7.2 ([7beaee9](https://github.com/posthtml/posthtml-parser/commit/7beaee9))
 * fix: correctly parse text content after comments ([818e2f5](https://github.com/posthtml/posthtml-parser/commit/818e2f5))
 * build(deps): bump y18n from 4.0.0 to 4.0.1 ([6b52ac1](https://github.com/posthtml/posthtml-parser/commit/6b52ac1))
 
