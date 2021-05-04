@@ -1,5 +1,5 @@
 import {Parser, ParserOptions} from 'htmlparser2';
-import {Directive, Node, Options, Attributes} from '../types/index.d';
+import {Directive, Node, NodeTag, Options, Attributes} from '../types/index.d';
 
 const defaultOptions: ParserOptions = {
   lowerCaseTags: false,
@@ -49,6 +49,34 @@ const parser = (html: string, options: Options = {}): Node[] => {
     return result;
   }
 
+  const lastLoc = {
+    line: 1,
+    column: 1
+  };
+
+  let lastIndex = 0;
+  function getLoc(index: number) {
+    if (index < lastIndex) {
+      throw new Error('Source indices must be monotonic');
+    }
+
+    while (lastIndex < index) {
+      if (html.charCodeAt(lastIndex) === /* \n */ 10) {
+        lastLoc.line++;
+        lastLoc.column = 1;
+      } else {
+        lastLoc.column++;
+      }
+
+      lastIndex++;
+    }
+
+    return {
+      line: lastLoc.line,
+      column: lastLoc.column
+    };
+  }
+
   function onprocessinginstruction(name: string, data: string) {
     const directives = defaultDirectives.concat(options.directives ?? []);
     const last: Node = bufferArrayLast();
@@ -92,7 +120,15 @@ const parser = (html: string, options: Options = {}): Node[] => {
   }
 
   function onopentag(tag: string, attrs: Attributes) {
-    const buf: Node = {tag};
+    const start = getLoc(parser.startIndex);
+    const buf: NodeTag = {tag};
+
+    if (options.sourceLocations) {
+      buf.loc = {
+        start,
+        end: start
+      };
+    }
 
     if (Object.keys(attrs).length > 0) {
       buf.attrs = normalizeArributes(attrs);
@@ -103,6 +139,10 @@ const parser = (html: string, options: Options = {}): Node[] => {
 
   function onclosetag() {
     const buf: Node | undefined = bufArray.pop();
+
+    if (buf && typeof buf === 'object' && buf.loc && parser.endIndex !== null) {
+      buf.loc.end = getLoc(parser.endIndex);
+    }
 
     if (buf) {
       const last = bufferArrayLast();

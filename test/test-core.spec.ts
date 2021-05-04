@@ -240,3 +240,55 @@ test('should be not converting html entity name', t => {
   const expected = ['&zwnj;&nbsp;&copy;'];
   t.deepEqual(tree, expected);
 });
+
+test('should parse with source locations', t => {
+  const html = '<h1>Test</h1>\n<p><b>Foo</b></p>';
+  const tree = parser(html, {sourceLocations: true});
+  const expected = [
+    {
+      tag: 'h1',
+      content: ['Test'],
+      loc: {
+        start: {
+          line: 1,
+          column: 1
+        },
+        end: {
+          line: 1,
+          column: 13
+        }
+      }
+    },
+    '\n',
+    {
+      tag: 'p',
+      content: [
+        {
+          tag: 'b',
+          content: ['Foo'],
+          loc: {
+            start: {
+              line: 2,
+              column: 4
+            },
+            end: {
+              line: 2,
+              column: 13
+            }
+          }
+        }
+      ],
+      loc: {
+        start: {
+          line: 2,
+          column: 1
+        },
+        end: {
+          line: 2,
+          column: 17
+        }
+      }
+    }
+  ];
+  t.deepEqual(tree, expected);
+});
