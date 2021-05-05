@@ -14,12 +14,17 @@ export type Options = {
   directives?: Directive[];
 } & ParserOptions;
 
-export type Node = NodeText | NodeTag;
+export type Tag = string | boolean;
+export type Attributes = Record<string, string>;
+export type Content = NodeText | Node[];
+
 export type NodeText = string;
 export type NodeTag = {
-  tag?: string | boolean;
+  tag?: Tag;
   attrs?: Attributes;
-  content?: Node[];
+  content?: Content;
 };
 
-export type Attributes = Record<string, string>;
+export type Node = NodeText | NodeTag;
+
+
