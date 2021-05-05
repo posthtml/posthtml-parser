@@ -26,5 +26,3 @@ export type NodeTag = {
 };
 
 export type Node = NodeText | NodeTag;
-
-
