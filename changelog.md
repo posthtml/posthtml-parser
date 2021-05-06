@@ -1,5 +1,12 @@
+## <small>0.8.5 (2021-05-06)</small>
+
+* perf: content two dimensional array ([8373816](https://github.com/posthtml/posthtml-parser/commit/8373816))
+
+
+
 ## <small>0.8.4 (2021-05-06)</small>
 
+* 0.8.4 ([aaa0b3e](https://github.com/posthtml/posthtml-parser/commit/aaa0b3e))
 * perf: attr value as number ([3d08ec5](https://github.com/posthtml/posthtml-parser/commit/3d08ec5))
 
 

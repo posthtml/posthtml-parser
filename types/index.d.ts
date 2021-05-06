@@ -16,7 +16,7 @@ export type Options = {
 
 export type Tag = string | boolean;
 export type Attributes = Record<string, string | number | boolean>;
-export type Content = NodeText | Node[];
+export type Content = NodeText | Node[] | Node[][];
 
 export type NodeText = string | number;
 export type NodeTag = {
