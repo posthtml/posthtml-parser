@@ -18,7 +18,7 @@ export type Tag = string | boolean;
 export type Attributes = Record<string, string>;
 export type Content = NodeText | Node[];
 
-export type NodeText = string;
+export type NodeText = string | number;
 export type NodeTag = {
   tag?: Tag;
   attrs?: Attributes;
