@@ -1,5 +1,12 @@
+## <small>0.8.2 (2021-05-06)</small>
+
+* perf: type node text as number ([bf2fb73](https://github.com/posthtml/posthtml-parser/commit/bf2fb73))
+
+
+
 ## <small>0.8.1 (2021-05-05)</small>
 
+* 0.8.1 ([67a337b](https://github.com/posthtml/posthtml-parser/commit/67a337b))
 * ci: add node 16 ([58c6740](https://github.com/posthtml/posthtml-parser/commit/58c6740))
 * perf: types content ([e9f59a2](https://github.com/posthtml/posthtml-parser/commit/e9f59a2))
 * perf: types content ([87b2a82](https://github.com/posthtml/posthtml-parser/commit/87b2a82))
