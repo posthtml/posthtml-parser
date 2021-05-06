@@ -15,7 +15,7 @@ export type Options = {
 } & ParserOptions;
 
 export type Tag = string | boolean;
-export type Attributes = Record<string, string | boolean>;
+export type Attributes = Record<string, string | number | boolean>;
 export type Content = NodeText | Node[];
 
 export type NodeText = string | number;
