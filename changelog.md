@@ -1,5 +1,12 @@
+## <small>0.8.4 (2021-05-06)</small>
+
+* perf: attr value as number ([3d08ec5](https://github.com/posthtml/posthtml-parser/commit/3d08ec5))
+
+
+
 ## <small>0.8.3 (2021-05-06)</small>
 
+* 0.8.3 ([80e07ca](https://github.com/posthtml/posthtml-parser/commit/80e07ca))
 * perf: attr value as boolean ([d143dbb](https://github.com/posthtml/posthtml-parser/commit/d143dbb))
 
 
