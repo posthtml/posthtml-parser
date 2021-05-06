@@ -1,5 +1,14 @@
+## <small>0.8.1 (2021-05-05)</small>
+
+* ci: add node 16 ([58c6740](https://github.com/posthtml/posthtml-parser/commit/58c6740))
+* perf: types content ([e9f59a2](https://github.com/posthtml/posthtml-parser/commit/e9f59a2))
+* perf: types content ([87b2a82](https://github.com/posthtml/posthtml-parser/commit/87b2a82))
+
+
+
 ## 0.8.0 (2021-04-16)
 
+* 0.8.0 ([9676edd](https://github.com/posthtml/posthtml-parser/commit/9676edd))
 * ci: drop support for node 10 (found not to be working) ([585d552](https://github.com/posthtml/posthtml-parser/commit/585d552))
 * build: add prepare script ([1dc46fc](https://github.com/posthtml/posthtml-parser/commit/1dc46fc))
 

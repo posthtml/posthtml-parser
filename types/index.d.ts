@@ -15,16 +15,20 @@ export type Options = {
   sourceLocations?: boolean;
 } & ParserOptions;
 
-export type Node = NodeText | NodeTag;
+export type Tag = string | boolean;
+export type Attributes = Record<string, string>;
+export type Content = NodeText | Node[];
+
 export type NodeText = string;
 export type NodeTag = {
-  tag?: string | boolean;
+  tag?: Tag;
   attrs?: Attributes;
-  content?: Node[];
+  content?: Content;
   location?: SourceLocation;
 };
 
-export type Attributes = Record<string, string>;
+export type Node = NodeText | NodeTag;
+
 export type SourceLocation = {
   start: Position;
   end: Position;
