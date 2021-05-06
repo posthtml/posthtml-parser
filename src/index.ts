@@ -1,5 +1,6 @@
 import {Parser, ParserOptions} from 'htmlparser2';
 import {Directive, Node, NodeTag, Options, Attributes} from '../types/index.d';
+import {LocationTracker} from './location-tracker';
 
 const defaultOptions: ParserOptions = {
   lowerCaseTags: false,
@@ -16,6 +17,7 @@ const defaultDirectives: Directive[] = [
 ];
 
 const parser = (html: string, options: Options = {}): Node[] => {
+  const locationTracker = new LocationTracker(html);
   const bufArray: Node[] = [];
   const results: Node[] = [];
 
@@ -47,34 +49,6 @@ const parser = (html: string, options: Options = {}): Node[] => {
     });
 
     return result;
-  }
-
-  const lastLoc = {
-    line: 1,
-    column: 1
-  };
-
-  let lastIndex = 0;
-  function getLoc(index: number) {
-    if (index < lastIndex) {
-      throw new Error('Source indices must be monotonic');
-    }
-
-    while (lastIndex < index) {
-      if (html.charCodeAt(lastIndex) === /* \n */ 10) {
-        lastLoc.line++;
-        lastLoc.column = 1;
-      } else {
-        lastLoc.column++;
-      }
-
-      lastIndex++;
-    }
-
-    return {
-      line: lastLoc.line,
-      column: lastLoc.column
-    };
   }
 
   function onprocessinginstruction(name: string, data: string) {
@@ -120,11 +94,11 @@ const parser = (html: string, options: Options = {}): Node[] => {
   }
 
   function onopentag(tag: string, attrs: Attributes) {
-    const start = getLoc(parser.startIndex);
+    const start = locationTracker.getPosition(parser.startIndex);
     const buf: NodeTag = {tag};
 
     if (options.sourceLocations) {
-      buf.loc = {
+      buf.location = {
         start,
         end: start
       };
@@ -140,8 +114,8 @@ const parser = (html: string, options: Options = {}): Node[] => {
   function onclosetag() {
     const buf: Node | undefined = bufArray.pop();
 
-    if (buf && typeof buf === 'object' && buf.loc && parser.endIndex !== null) {
-      buf.loc.end = getLoc(parser.endIndex);
+    if (buf && typeof buf === 'object' && buf.location && parser.endIndex !== null) {
+      buf.location.end = locationTracker.getPosition(parser.endIndex);
     }
 
     if (buf) {

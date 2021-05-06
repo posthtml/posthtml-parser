@@ -248,7 +248,7 @@ test('should parse with source locations', t => {
     {
       tag: 'h1',
       content: ['Test'],
-      loc: {
+      location: {
         start: {
           line: 1,
           column: 1
@@ -266,7 +266,7 @@ test('should parse with source locations', t => {
         {
           tag: 'b',
           content: ['Foo'],
-          loc: {
+          location: {
             start: {
               line: 2,
               column: 4
@@ -278,7 +278,7 @@ test('should parse with source locations', t => {
           }
         }
       ],
-      loc: {
+      location: {
         start: {
           line: 2,
           column: 1

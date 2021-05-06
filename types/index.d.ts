@@ -21,7 +21,7 @@ export type NodeTag = {
   tag?: string | boolean;
   attrs?: Attributes;
   content?: Node[];
-  loc?: SourceLocation;
+  location?: SourceLocation;
 };
 
 export type Attributes = Record<string, string>;
