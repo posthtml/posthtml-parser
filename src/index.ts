@@ -1,5 +1,6 @@
 import {Parser, ParserOptions} from 'htmlparser2';
-import {Directive, Node, Options, Attributes} from '../types/index.d';
+import {Directive, Node, NodeTag, Options, Attributes} from '../types/index.d';
+import {LocationTracker} from './location-tracker';
 
 const defaultOptions: ParserOptions = {
   lowerCaseTags: false,
@@ -16,6 +17,7 @@ const defaultDirectives: Directive[] = [
 ];
 
 const parser = (html: string, options: Options = {}): Node[] => {
+  const locationTracker = new LocationTracker(html);
   const bufArray: Node[] = [];
   const results: Node[] = [];
 
@@ -92,7 +94,15 @@ const parser = (html: string, options: Options = {}): Node[] => {
   }
 
   function onopentag(tag: string, attrs: Attributes) {
-    const buf: Node = {tag};
+    const start = locationTracker.getPosition(parser.startIndex);
+    const buf: NodeTag = {tag};
+
+    if (options.sourceLocations) {
+      buf.location = {
+        start,
+        end: start
+      };
+    }
 
     if (Object.keys(attrs).length > 0) {
       buf.attrs = normalizeArributes(attrs);
@@ -103,6 +113,10 @@ const parser = (html: string, options: Options = {}): Node[] => {
 
   function onclosetag() {
     const buf: Node | undefined = bufArray.pop();
+
+    if (buf && typeof buf === 'object' && buf.location && parser.endIndex !== null) {
+      buf.location.end = locationTracker.getPosition(parser.endIndex);
+    }
 
     if (buf) {
       const last = bufferArrayLast();

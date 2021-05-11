@@ -12,6 +12,7 @@ export type Directive = {
 
 export type Options = {
   directives?: Directive[];
+  sourceLocations?: boolean;
 } & ParserOptions;
 
 export type Tag = string | boolean;
@@ -23,6 +24,17 @@ export type NodeTag = {
   tag?: Tag;
   attrs?: Attributes;
   content?: Content;
+  location?: SourceLocation;
 };
 
 export type Node = NodeText | NodeTag;
+
+export type SourceLocation = {
+  start: Position;
+  end: Position;
+};
+
+export type Position = {
+  line: number;
+  column: number;
+};
