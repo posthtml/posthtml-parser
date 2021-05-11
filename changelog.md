@@ -1,5 +1,14 @@
+## 0.9.0 (2021-05-11)
+
+* Add description to docs ([d61007b](https://github.com/posthtml/posthtml-parser/commit/d61007b))
+* Move location tracker to a separate file and refactor into class ([7d6f76b](https://github.com/posthtml/posthtml-parser/commit/7d6f76b))
+* feat: add optional support for source locations ([6faf50d](https://github.com/posthtml/posthtml-parser/commit/6faf50d))
+
+
+
 ## <small>0.8.5 (2021-05-06)</small>
 
+* 0.8.5 ([14d353e](https://github.com/posthtml/posthtml-parser/commit/14d353e))
 * perf: content two dimensional array ([8373816](https://github.com/posthtml/posthtml-parser/commit/8373816))
 
 
