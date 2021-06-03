@@ -115,9 +115,9 @@ Type: `Boolean`
 Default: `false`   
 Description: *If set to true, self-closing tags will trigger the `onclosetag` event even if `xmlMode` is not set to `true`. NOTE: If `xmlMode` is set to `true` then self-closing tags will always be recognized.*
 
-### `sourceLocations`
-Type: `Boolean`
-Default: `false`
+### `sourceLocations`  
+Type: `Boolean`  
+Default: `false`  
 Description: *If set to true, AST nodes will have a `location` property containing the `start` and `end` line and column position of the node.*
 
 ## License
