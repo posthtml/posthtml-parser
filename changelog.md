@@ -1,5 +1,22 @@
+## <small>0.9.1 (2021-07-26)</small>
+
+* test: dom nest parsing issues #76 ([fdfe82e](https://github.com/posthtml/posthtml-parser/commit/fdfe82e)), closes [#76](https://github.com/posthtml/posthtml-parser/issues/76)
+* test: remove only ([78b7fc7](https://github.com/posthtml/posthtml-parser/commit/78b7fc7))
+* style: after prettier ([ccbfd69](https://github.com/posthtml/posthtml-parser/commit/ccbfd69))
+* style: after prettier ([72f2092](https://github.com/posthtml/posthtml-parser/commit/72f2092))
+* build: set object-curly-spacing always ([47dceb6](https://github.com/posthtml/posthtml-parser/commit/47dceb6))
+* build(deps): bump handlebars from 4.7.6 to 4.7.7 ([e6bc6cd](https://github.com/posthtml/posthtml-parser/commit/e6bc6cd))
+* build(deps): bump hosted-git-info from 2.8.8 to 2.8.9 ([2137591](https://github.com/posthtml/posthtml-parser/commit/2137591))
+* build(deps): bump lodash from 4.17.20 to 4.17.21 ([e9b8d04](https://github.com/posthtml/posthtml-parser/commit/e9b8d04))
+* build(deps): bump normalize-url from 4.5.0 to 4.5.1 ([9e0d1f9](https://github.com/posthtml/posthtml-parser/commit/9e0d1f9))
+* perf: type for replace ([94ebb8d](https://github.com/posthtml/posthtml-parser/commit/94ebb8d))
+* Update readme.md ([7081062](https://github.com/posthtml/posthtml-parser/commit/7081062))
+
+
+
 ## 0.9.0 (2021-05-11)
 
+* 0.9.0 ([d725e83](https://github.com/posthtml/posthtml-parser/commit/d725e83))
 * Add description to docs ([d61007b](https://github.com/posthtml/posthtml-parser/commit/d61007b))
 * Move location tracker to a separate file and refactor into class ([7d6f76b](https://github.com/posthtml/posthtml-parser/commit/7d6f76b))
 * feat: add optional support for source locations ([6faf50d](https://github.com/posthtml/posthtml-parser/commit/6faf50d))
