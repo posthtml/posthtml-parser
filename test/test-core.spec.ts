@@ -294,9 +294,9 @@ test('should parse with source locations', t => {
   t.deepEqual(tree, expected);
 });
 
-test.only('should parse with input in button', t => {
+test('should parse with input in button', t => {
   const html = '<button >Hello <input type="file" ng-hide="true" />PostHtml</button>';
-  const tree = parser(html);
+  const tree = parser(html, { xmlMode: true });
   const expected = [
     {
       tag: 'button',
@@ -306,13 +306,12 @@ test.only('should parse with input in button', t => {
           tag: 'input',
           attrs: {
             type: 'file',
-            'ng-hide': true
+            'ng-hide': 'true'
           }
         },
         'PostHtml'
       ]
     }
   ];
-  console.log({ tree });
   t.deepEqual(tree, expected);
 });
