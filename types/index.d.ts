@@ -1,4 +1,4 @@
-import {ParserOptions} from 'htmlparser2';
+import { ParserOptions } from 'htmlparser2';
 
 declare const parser: (html: string, options?: Options) => Node[];
 

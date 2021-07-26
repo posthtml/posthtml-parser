@@ -1,4 +1,4 @@
-import {Position} from '../types/index.d';
+import { Position } from '../types/index.d';
 
 export class LocationTracker {
   private readonly source: string;

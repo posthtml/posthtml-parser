@@ -4,6 +4,6 @@ module.exports = {
     '@typescript-eslint/prefer-readonly-parameter-types': 'off',
     'ava/no-skip-test': 'off',
     'ava/no-only-test': 'off',
-    'object-curly-spacing': ['error','always']
+    'object-curly-spacing': ['error', 'always']
   }
 };
