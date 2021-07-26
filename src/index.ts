@@ -44,7 +44,7 @@ const parser = (html: string, options: Options = {}): Node[] => {
     Object.keys(attrs).forEach((key: string) => {
       const object: Attributes = {};
 
-      object[key] = attrs[key].replace(/&quot;/g, '"');
+      object[key] = String(attrs[key]).replace(/&quot;/g, '"');
       Object.assign(result, object);
     });
 
