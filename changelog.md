@@ -1,5 +1,14 @@
+## 0.10.0 (2021-07-28)
+
+* refactor: parse now export not default ([f8ae42d](https://github.com/posthtml/posthtml-parser/commit/f8ae42d))
+* perf: resolve types ([9ed9bd0](https://github.com/posthtml/posthtml-parser/commit/9ed9bd0))
+
+
+
 ## <small>0.9.1 (2021-07-26)</small>
 
+* 0.9.1 ([a03017e](https://github.com/posthtml/posthtml-parser/commit/a03017e))
+* Update readme.md ([7081062](https://github.com/posthtml/posthtml-parser/commit/7081062))
 * test: dom nest parsing issues #76 ([fdfe82e](https://github.com/posthtml/posthtml-parser/commit/fdfe82e)), closes [#76](https://github.com/posthtml/posthtml-parser/issues/76)
 * test: remove only ([78b7fc7](https://github.com/posthtml/posthtml-parser/commit/78b7fc7))
 * style: after prettier ([ccbfd69](https://github.com/posthtml/posthtml-parser/commit/ccbfd69))
@@ -10,7 +19,6 @@
 * build(deps): bump lodash from 4.17.20 to 4.17.21 ([e9b8d04](https://github.com/posthtml/posthtml-parser/commit/e9b8d04))
 * build(deps): bump normalize-url from 4.5.0 to 4.5.1 ([9e0d1f9](https://github.com/posthtml/posthtml-parser/commit/9e0d1f9))
 * perf: type for replace ([94ebb8d](https://github.com/posthtml/posthtml-parser/commit/94ebb8d))
-* Update readme.md ([7081062](https://github.com/posthtml/posthtml-parser/commit/7081062))
 
 
 
