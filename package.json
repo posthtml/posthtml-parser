@@ -25,7 +25,7 @@
   },
   "scripts": {
     "version": "conventional-changelog -i changelog.md -s -r 0 && git add changelog.md",
-    "build": "rm -rf dist && tsup src/*.ts --minify",
+    "build": "rm -rf dist && tsup src/*.ts --dts --minify",
     "dev": "npm run build -- --watch",
     "test": "xo && c8 ava",
     "pretest": "clinton",
@@ -62,5 +62,5 @@
     "typescript": "^4.0.5",
     "xo": "^0.37.1"
   },
-  "types": "types/index.d.ts"
+  "types": "dist/index.d.ts"
 }
