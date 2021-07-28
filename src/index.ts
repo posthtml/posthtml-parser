@@ -1,6 +1,30 @@
 import { Parser, ParserOptions } from 'htmlparser2';
-import { Directive, Node, NodeTag, Options, Attributes } from '../types/index.d';
-import { LocationTracker } from './location-tracker';
+import { LocationTracker, SourceLocation } from './location-tracker';
+
+export type Directive = {
+  name: string | RegExp;
+  start: string;
+  end: string;
+};
+
+export type Options = {
+  directives?: Directive[];
+  sourceLocations?: boolean;
+} & ParserOptions;
+
+export type Tag = string | boolean;
+export type Attributes = Record<string, string | number | boolean>;
+export type Content = NodeText | Array<Node | Node[]>;
+
+export type NodeText = string | number;
+export type NodeTag = {
+  tag?: Tag;
+  attrs?: Attributes;
+  content?: Content;
+  location?: SourceLocation;
+};
+
+export type Node = NodeText | NodeTag;
 
 const defaultOptions: ParserOptions = {
   lowerCaseTags: false,
@@ -16,7 +40,7 @@ const defaultDirectives: Directive[] = [
   }
 ];
 
-const parser = (html: string, options: Options = {}): Node[] => {
+export const parser = (html: string, options: Options = {}): Node[] => {
   const locationTracker = new LocationTracker(html);
   const bufArray: Node[] = [];
   const results: Node[] = [];
@@ -53,7 +77,7 @@ const parser = (html: string, options: Options = {}): Node[] => {
 
   function onprocessinginstruction(name: string, data: string) {
     const directives = defaultDirectives.concat(options.directives ?? []);
-    const last: Node = bufferArrayLast();
+    const last = bufferArrayLast();
 
     for (const directive of directives) {
       const directiveText = directive.start + data + directive.end;
@@ -69,15 +93,17 @@ const parser = (html: string, options: Options = {}): Node[] => {
             last.content = [];
           }
 
-          last.content.push(directiveText);
+          if (Array.isArray(last.content)) {
+            last.content.push(directiveText);
+          }
         }
       }
     }
   }
 
   function oncomment(data: string) {
-    const comment = `<!--${data}-->`;
     const last = bufferArrayLast();
+    const comment = `<!--${data}-->`;
 
     if (last === undefined) {
       results.push(comment);
@@ -89,7 +115,9 @@ const parser = (html: string, options: Options = {}): Node[] => {
         last.content = [];
       }
 
-      last.content.push(comment);
+      if (Array.isArray(last.content)) {
+        last.content.push(comment);
+      }
     }
   }
 
@@ -131,7 +159,9 @@ const parser = (html: string, options: Options = {}): Node[] => {
           last.content = [];
         }
 
-        last.content.push(buf);
+        if (Array.isArray(last.content)) {
+          last.content.push(buf);
+        }
       }
     }
   }
@@ -145,7 +175,7 @@ const parser = (html: string, options: Options = {}): Node[] => {
     }
 
     if (typeof last === 'object') {
-      if (last.content && last.content.length > 0) {
+      if (last.content && Array.isArray(last.content) && last.content.length > 0) {
         const lastContentNode = last.content[last.content.length - 1];
         if (typeof lastContentNode === 'string' && !lastContentNode.startsWith('<!--')) {
           last.content[last.content.length - 1] = `${lastContentNode}${text}`;
@@ -157,7 +187,9 @@ const parser = (html: string, options: Options = {}): Node[] => {
         last.content = [];
       }
 
-      last.content.push(text);
+      if (Array.isArray(last.content)) {
+        last.content.push(text);
+      }
     }
   }
 
@@ -174,5 +206,3 @@ const parser = (html: string, options: Options = {}): Node[] => {
 
   return results;
 };
-
-export default parser;
