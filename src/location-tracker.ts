@@ -1,4 +1,12 @@
-import { Position } from '../types/index.d';
+export type SourceLocation = {
+  start: Position;
+  end: Position;
+};
+
+export type Position = {
+  line: number;
+  column: number;
+};
 
 export class LocationTracker {
   private readonly source: string;

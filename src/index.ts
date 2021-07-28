@@ -1,5 +1,5 @@
 import { Parser, ParserOptions } from 'htmlparser2';
-import { LocationTracker } from './location-tracker';
+import { LocationTracker, SourceLocation } from './location-tracker';
 
 export type Directive = {
   name: string | RegExp;
@@ -14,8 +14,7 @@ export type Options = {
 
 export type Tag = string | boolean;
 export type Attributes = Record<string, string | number | boolean>;
-// export type Content = NodeText | Node[] | Node[][];
-export type Content = NodeText | (Node | Node[])[];
+export type Content = NodeText | Array<Node | Node[]>;
 
 export type NodeText = string | number;
 export type NodeTag = {
@@ -26,16 +25,6 @@ export type NodeTag = {
 };
 
 export type Node = NodeText | NodeTag;
-
-export type SourceLocation = {
-  start: Position;
-  end: Position;
-};
-
-export type Position = {
-  line: number;
-  column: number;
-};
 
 const defaultOptions: ParserOptions = {
   lowerCaseTags: false,
@@ -51,32 +40,13 @@ const defaultDirectives: Directive[] = [
   }
 ];
 
-const parser = (html: string, options: Options = {}): Node[] => {
+export const parser = (html: string, options: Options = {}): Node[] => {
   const locationTracker = new LocationTracker(html);
   const bufArray: Node[] = [];
   const results: Node[] = [];
 
   function bufferArrayLast(): Node {
     return bufArray[bufArray.length - 1];
-  }
-
-  function resolveContent(text: NodeText): void {
-    const last = bufferArrayLast();
-
-    if (last === undefined) {
-      results.push(text);
-      return;
-    }
-
-    if (typeof last === 'object') {
-      if (last.content === undefined) {
-        last.content = [];
-      }
-
-      if (Array.isArray(last.content)) {
-        last.content.push(text);
-      }
-    }
   }
 
   function isDirective(directive: Directive, tag: string): boolean {
@@ -107,20 +77,48 @@ const parser = (html: string, options: Options = {}): Node[] => {
 
   function onprocessinginstruction(name: string, data: string) {
     const directives = defaultDirectives.concat(options.directives ?? []);
+    const last = bufferArrayLast();
 
     for (const directive of directives) {
       const directiveText = directive.start + data + directive.end;
 
       if (isDirective(directive, name.toLowerCase())) {
-        resolveContent(directiveText);
+        if (last === undefined) {
+          results.push(directiveText);
+          return;
+        }
+
+        if (typeof last === 'object') {
+          if (last.content === undefined) {
+            last.content = [];
+          }
+
+          if (Array.isArray(last.content)) {
+            last.content.push(directiveText);
+          }
+        }
       }
     }
   }
 
   function oncomment(data: string) {
+    const last = bufferArrayLast();
     const comment = `<!--${data}-->`;
 
-    resolveContent(comment);
+    if (last === undefined) {
+      results.push(comment);
+      return;
+    }
+
+    if (typeof last === 'object') {
+      if (last.content === undefined) {
+        last.content = [];
+      }
+
+      if (Array.isArray(last.content)) {
+        last.content.push(comment);
+      }
+    }
   }
 
   function onopentag(tag: string, attrs: Attributes) {
@@ -188,6 +186,7 @@ const parser = (html: string, options: Options = {}): Node[] => {
       if (last.content === undefined) {
         last.content = [];
       }
+
       if (Array.isArray(last.content)) {
         last.content.push(text);
       }
@@ -207,5 +206,3 @@ const parser = (html: string, options: Options = {}): Node[] => {
 
   return results;
 };
-
-export default parser;

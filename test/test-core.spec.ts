@@ -1,5 +1,5 @@
 import test from 'ava';
-import parser from '../src';
+import { parser } from '../src';
 
 test('should be parse doctype in uppercase', t => {
   const tree = parser('<!DOCTYPE html>');
