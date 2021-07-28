@@ -22,7 +22,7 @@ $ npm install posthtml-parser
 </a>
 ```
 ```js
-import parser from 'posthtml-parser'
+import { parser } from 'posthtml-parser'
 import fs from 'fs'
 
 const html = fs.readFileSync('path/to/input.html', 'utf-8')
