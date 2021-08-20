@@ -143,7 +143,7 @@ export const parser = (html: string, options: Options = {}): Node[] => {
     const buf: Node | undefined = bufArray.pop();
 
     if (buf && typeof buf === 'object' && buf.location && parser.endIndex !== null) {
-      buf.location.end = locationTracker.getPosition(parser.endIndex);
+      buf.location.end = locationTracker.getPosition((!parser.tagname || parser.tagname === buf.tag) ? parser.endIndex : parser.startIndex - 1);
     }
 
     if (buf) {
