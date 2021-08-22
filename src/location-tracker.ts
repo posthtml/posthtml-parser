@@ -25,7 +25,12 @@ export class LocationTracker {
 
   getPosition(index: number): Position {
     if (index < this.lastIndex) {
-      throw new Error('Source indices must be monotonic');
+      this.lastPosition = {
+        line: 1,
+        column: 1
+      };
+
+      this.lastIndex = 0;
     }
 
     while (this.lastIndex < index) {

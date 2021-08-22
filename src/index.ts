@@ -44,9 +44,14 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   const locationTracker = new LocationTracker(html);
   const bufArray: Node[] = [];
   const results: Node[] = [];
+  let lastIndices: [number, number];
 
-  function bufferArrayLast(): Node {
+  function bufferArrayLast(): Node | undefined {
     return bufArray[bufArray.length - 1];
+  }
+
+  function resultsLast(): Node | undefined {
+    return results[results.length - 1];
   }
 
   function isDirective(directive: Directive, tag: string): boolean {
@@ -122,10 +127,20 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   }
 
   function onopentag(tag: string, attrs: Attributes) {
-    const start = locationTracker.getPosition(parser.startIndex);
     const buf: NodeTag = { tag };
 
     if (options.sourceLocations) {
+      if (lastIndices?.[0] === parser.startIndex && lastIndices?.[1] === parser.endIndex) {
+        // The last closing tag was inferred, so we need to update its end location
+        const last = bufferArrayLast() || resultsLast();
+
+        if (typeof last === 'object' && Array.isArray(last.content) && last.location) {
+          last.location.end = locationTracker.getPosition(parser.startIndex - 1)
+        }
+      }
+
+      const start = locationTracker.getPosition(parser.startIndex);
+
       buf.location = {
         start,
         end: start
@@ -142,8 +157,9 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   function onclosetag() {
     const buf: Node | undefined = bufArray.pop();
 
-    if (buf && typeof buf === 'object' && buf.location && parser.endIndex !== null) {
-      buf.location.end = locationTracker.getPosition((!parser.tagname || parser.tagname === buf.tag) ? parser.endIndex : parser.startIndex - 1);
+    if (buf && typeof buf === 'object' && buf.location && buf.location.end === buf.location.start && parser.endIndex !== null) {
+      lastIndices = [parser.startIndex, parser.endIndex];
+      buf.location.end = locationTracker.getPosition(parser.endIndex);
     }
 
     if (buf) {
@@ -167,7 +183,7 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   }
 
   function ontext(text: string) {
-    const last: Node = bufferArrayLast();
+    const last = bufferArrayLast();
 
     if (last === undefined) {
       results.push(text);
