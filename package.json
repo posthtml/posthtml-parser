@@ -39,7 +39,7 @@
     "posthtmltree"
   ],
   "dependencies": {
-    "htmlparser2": "github:fb55/htmlparser2#a2b0bf3fd8332c36575973c77e75d491e34ad30e"
+    "htmlparser2": "^7.1.0"
   },
   "devDependencies": {
     "@antfu/eslint-config-ts": "^0.4.3",
