@@ -16,7 +16,7 @@ export type Tag = string | boolean;
 export type Attributes = Record<string, string | number | boolean>;
 export type Content = NodeText | Array<Node | Node[]>;
 
-export type NodeText = string | number;
+export type NodeText = { text: string | number };
 export type NodeTag = {
   tag?: Tag;
   attrs?: Attributes;
@@ -24,7 +24,7 @@ export type NodeTag = {
   location?: SourceLocation;
 };
 
-export type Node = NodeText | NodeTag;
+export type Node = (NodeText | NodeTag) & { parent?: NodeTag | Node[] };
 
 const defaultOptions: ParserOptions = {
   lowerCaseTags: false,
@@ -47,6 +47,21 @@ export const parser = (html: string, options: Options = {}): Node[] => {
 
   function bufferArrayLast(): Node {
     return bufArray[bufArray.length - 1];
+  }
+
+  function appendChild(parent: NodeTag | Node[], child: Node) {
+    child.parent = parent;
+
+    if (Array.isArray(parent)) {
+      parent.push(child);
+      return;
+    }
+
+    if (!Array.isArray(parent.content)) {
+      parent.content = [];
+    }
+
+    parent.content.push(child);
   }
 
   function isDirective(directive: Directive, tag: string): boolean {
@@ -84,17 +99,17 @@ export const parser = (html: string, options: Options = {}): Node[] => {
 
       if (isDirective(directive, name.toLowerCase())) {
         if (last === undefined) {
-          results.push(directiveText);
+          appendChild(results, { text: directiveText });
           return;
         }
 
-        if (typeof last === 'object') {
+        if ((typeof last === 'object') && !('text' in last)) {
           if (last.content === undefined) {
             last.content = [];
           }
 
           if (Array.isArray(last.content)) {
-            last.content.push(directiveText);
+            appendChild(last, { text: directiveText });
           }
         }
       }
@@ -106,17 +121,17 @@ export const parser = (html: string, options: Options = {}): Node[] => {
     const comment = `<!--${data}-->`;
 
     if (last === undefined) {
-      results.push(comment);
+      appendChild(results, { text: comment });
       return;
     }
 
-    if (typeof last === 'object') {
+    if ((typeof last === 'object') && !('text' in last)) {
       if (last.content === undefined) {
         last.content = [];
       }
 
       if (Array.isArray(last.content)) {
-        last.content.push(comment);
+        appendChild(last, { text: comment });
       }
     }
   }
@@ -142,7 +157,8 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   function onclosetag() {
     const buf: Node | undefined = bufArray.pop();
 
-    if (buf && typeof buf === 'object' && buf.location && parser.endIndex !== null) {
+    if (buf && typeof buf === 'object' && !('text' in buf) &&
+        buf.location && parser.endIndex !== null) {
       buf.location.end = locationTracker.getPosition(parser.endIndex);
     }
 
@@ -150,17 +166,17 @@ export const parser = (html: string, options: Options = {}): Node[] => {
       const last = bufferArrayLast();
 
       if (bufArray.length <= 0) {
-        results.push(buf);
+        appendChild(results, buf);
         return;
       }
 
-      if (typeof last === 'object') {
+      if ((typeof last === 'object') && !('text' in last)) {
         if (last.content === undefined) {
           last.content = [];
         }
 
         if (Array.isArray(last.content)) {
-          last.content.push(buf);
+          appendChild(last, buf);
         }
       }
     }
@@ -170,15 +186,16 @@ export const parser = (html: string, options: Options = {}): Node[] => {
     const last: Node = bufferArrayLast();
 
     if (last === undefined) {
-      results.push(text);
+      appendChild(results, { text });
       return;
     }
 
-    if (typeof last === 'object') {
+    if ((typeof last === 'object') && !('text' in last)) {
       if (last.content && Array.isArray(last.content) && last.content.length > 0) {
         const lastContentNode = last.content[last.content.length - 1];
-        if (typeof lastContentNode === 'string' && !lastContentNode.startsWith('<!--')) {
-          last.content[last.content.length - 1] = `${lastContentNode}${text}`;
+        if (('text' in lastContentNode) &&
+              typeof lastContentNode.text === 'string' && !lastContentNode.text.startsWith('<!--')) {
+          lastContentNode.text += String(text);
           return;
         }
       }
@@ -188,7 +205,7 @@ export const parser = (html: string, options: Options = {}): Node[] => {
       }
 
       if (Array.isArray(last.content)) {
-        last.content.push(text);
+        appendChild(last, { text });
       }
     }
   }
