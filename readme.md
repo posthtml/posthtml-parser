@@ -46,23 +46,34 @@ console.log(parser(html)) // Logs a PostHTML AST
         href: '#'
     },
     content: [
-        '\n    ',
+        {
+            text: '\n    ',
+            parent: [Circular]
+        },
         {
             tag: 'span',
             attrs: {
                 class: 'animals__cat',
                 style: 'background: url(cat.png)'
             },
-            content: ['Cat']
+            content: [{
+                text: 'Cat',
+                parent: [Circular],
+            }],
+            parent: [Circular]
         },
-        '\n'
-    ]
+        {
+            text: '\n',
+            parent: [Circular]
+        }
+    ],
+    parent: [Circular]
 }]
 ```
 
 ## PostHTML AST Format
 
-Any parser being used with PostHTML should return a standard PostHTML [Abstract Syntax Tree](https://www.wikiwand.com/en/Abstract_syntax_tree) (AST). Fortunately, this is a very easy format to produce and understand. The AST is an array that can contain strings and objects. Any strings represent plain text content to be written to the output. Any objects represent HTML tags.
+Any parser being used with PostHTML should return a standard PostHTML [Abstract Syntax Tree](https://www.wikiwand.com/en/Abstract_syntax_tree) (AST). Fortunately, this is a very easy format to produce and understand. The AST is an array that can contain two types of objects: tag objects and text node objects.
 
 Tag objects generally look something like this:
 
@@ -72,11 +83,17 @@ Tag objects generally look something like this:
     attrs: {
         class: 'foo'
     },
-    content: ['hello world!']
+    content: [{
+        text: 'hello world!',
+        parent: [Circular]
+    }],
+    parent: [Circular]
 }
 ```
 
-Tag objects can contain three keys. The `tag` key takes the name of the tag as the value. This can include custom tags. The optional `attrs` key takes an object with key/value pairs representing the attributes of the html tag. A boolean attribute has an empty string as its value. Finally, the optional `content` key takes an array as its value, which is a PostHTML AST. In this manner, the AST is a tree that should be walked recursively.
+Tag objects can contain four keys. The `tag` key takes the name of the tag as the value. This can include custom tags. The optional `attrs` key takes an object with key/value pairs representing the attributes of the html tag. A boolean attribute has an empty string as its value. The optional `content` key takes an array as its value, which is a PostHTML AST. Finally, the optional `parent` key stores a reference to the parent node. In this manner, the AST is a tree that should be walked recursively.
+
+Text node objects can contain two keys. The `text` key contains the text itself and the optional `parent` key stores a reference to the parent node.
 
 ## Options
 
