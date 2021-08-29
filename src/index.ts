@@ -44,14 +44,10 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   const locationTracker = new LocationTracker(html);
   const bufArray: Node[] = [];
   const results: Node[] = [];
-  let lastIndices: [number, number];
+  let lastOpenTagEndIndex = 0;
 
-  function bufferArrayLast(): Node | undefined {
+  function bufferArrayLast(): Node {
     return bufArray[bufArray.length - 1];
-  }
-
-  function resultsLast(): Node | undefined {
-    return results[results.length - 1];
   }
 
   function isDirective(directive: Directive, tag: string): boolean {
@@ -130,21 +126,11 @@ export const parser = (html: string, options: Options = {}): Node[] => {
     const buf: NodeTag = { tag };
 
     if (options.sourceLocations) {
-      if (lastIndices?.[0] === parser.startIndex && lastIndices?.[1] === parser.endIndex) {
-        // The last closing tag was inferred, so we need to update its end location
-        const last = bufferArrayLast() || resultsLast();
-
-        if (typeof last === 'object' && Array.isArray(last.content) && last.location) {
-          last.location.end = locationTracker.getPosition(parser.startIndex - 1)
-        }
-      }
-
-      const start = locationTracker.getPosition(parser.startIndex);
-
       buf.location = {
-        start,
-        end: start
+        start: locationTracker.getPosition(parser.startIndex),
+        end: locationTracker.getPosition(parser.endIndex),
       };
+      lastOpenTagEndIndex = parser.endIndex;
     }
 
     if (Object.keys(attrs).length > 0) {
@@ -154,12 +140,15 @@ export const parser = (html: string, options: Options = {}): Node[] => {
     bufArray.push(buf);
   }
 
-  function onclosetag() {
+  function onclosetag(name: string, isImplied: boolean) {
     const buf: Node | undefined = bufArray.pop();
 
-    if (buf && typeof buf === 'object' && buf.location && buf.location.end === buf.location.start && parser.endIndex !== null) {
-      lastIndices = [parser.startIndex, parser.endIndex];
-      buf.location.end = locationTracker.getPosition(parser.endIndex);
+    if (buf && typeof buf === 'object' && buf.location && parser.endIndex !== null) {
+      if (!isImplied) {
+        buf.location.end = locationTracker.getPosition(parser.endIndex);
+      } else if (lastOpenTagEndIndex < parser.startIndex) {
+        buf.location.end = locationTracker.getPosition(parser.startIndex - 1);
+      }
     }
 
     if (buf) {
@@ -183,7 +172,7 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   }
 
   function ontext(text: string) {
-    const last = bufferArrayLast();
+    const last: Node = bufferArrayLast();
 
     if (last === undefined) {
       results.push(text);
