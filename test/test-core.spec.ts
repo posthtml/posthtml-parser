@@ -308,18 +308,18 @@ test('should parse with source locations', t => {
       location: {
         start: {
           line: 2,
-          column: 18,
+          column: 18
         },
         end: {
           line: 2,
-          column: 21,
-        },
-      },
+          column: 21
+        }
+      }
     },
     {
       tag: 'p',
       content: [
-        'Bar\n',
+        'Bar\n'
       ],
       location: {
         start: {
@@ -344,7 +344,7 @@ test('should parse with source locations', t => {
           column: 4
         }
       }
-    },
+    }
   ];
   t.deepEqual(tree, expected);
 });

@@ -128,7 +128,7 @@ export const parser = (html: string, options: Options = {}): Node[] => {
     if (options.sourceLocations) {
       buf.location = {
         start: locationTracker.getPosition(parser.startIndex),
-        end: locationTracker.getPosition(parser.endIndex),
+        end: locationTracker.getPosition(parser.endIndex)
       };
       lastOpenTagEndIndex = parser.endIndex;
     }
