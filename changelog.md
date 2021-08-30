@@ -1,5 +1,23 @@
+## <small>0.10.1 (2021-08-30)</small>
+
+* Force in something that works ([fb96d68](https://github.com/posthtml/posthtml-parser/commit/fb96d68))
+* Linting ([5166475](https://github.com/posthtml/posthtml-parser/commit/5166475))
+* Try and record previous indicies and rewrite if needed ([667ccf6](https://github.com/posthtml/posthtml-parser/commit/667ccf6))
+* Use isImplied ([4847a08](https://github.com/posthtml/posthtml-parser/commit/4847a08))
+* Use patched version ([c9fde63](https://github.com/posthtml/posthtml-parser/commit/c9fde63))
+* Use patched version ([1bd6633](https://github.com/posthtml/posthtml-parser/commit/1bd6633))
+* Use release ([2c53321](https://github.com/posthtml/posthtml-parser/commit/2c53321))
+* Use release ([4f00e5c](https://github.com/posthtml/posthtml-parser/commit/4f00e5c))
+* Use updated patched version ([4184539](https://github.com/posthtml/posthtml-parser/commit/4184539))
+* test: break test to demonstrate bug ([74c165c](https://github.com/posthtml/posthtml-parser/commit/74c165c))
+* build(deps): bump path-parse from 1.0.6 to 1.0.7 ([4f4ab7e](https://github.com/posthtml/posthtml-parser/commit/4f4ab7e))
+* docs: update import ([53bee3d](https://github.com/posthtml/posthtml-parser/commit/53bee3d))
+
+
+
 ## 0.10.0 (2021-07-28)
 
+* 0.10.0 ([b569e1a](https://github.com/posthtml/posthtml-parser/commit/b569e1a))
 * refactor: parse now export not default ([f8ae42d](https://github.com/posthtml/posthtml-parser/commit/f8ae42d))
 * perf: resolve types ([9ed9bd0](https://github.com/posthtml/posthtml-parser/commit/9ed9bd0))
 
