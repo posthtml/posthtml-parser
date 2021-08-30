@@ -243,7 +243,7 @@ test('should be not converting html entity name', t => {
 });
 
 test('should parse with source locations', t => {
-  const html = '<h1>Test</h1>\n<p><b>Foo</b></p>';
+  const html = '<h1>Test</h1>\n<p><b>Foo</b><hr></p><p>Bar\n<hr>';
   const tree = parser(html, { sourceLocations: true });
   const expected = [
     {
@@ -286,7 +286,62 @@ test('should parse with source locations', t => {
         },
         end: {
           line: 2,
+          column: 13
+        }
+      }
+    },
+    {
+      tag: 'hr',
+      location: {
+        start: {
+          line: 2,
+          column: 14
+        },
+        end: {
+          line: 2,
           column: 17
+        }
+      }
+    },
+    {
+      tag: 'p',
+      location: {
+        start: {
+          line: 2,
+          column: 18
+        },
+        end: {
+          line: 2,
+          column: 21
+        }
+      }
+    },
+    {
+      tag: 'p',
+      content: [
+        'Bar\n'
+      ],
+      location: {
+        start: {
+          line: 2,
+          column: 22
+        },
+        end: {
+          line: 2,
+          column: 28
+        }
+      }
+    },
+    {
+      tag: 'hr',
+      location: {
+        start: {
+          line: 3,
+          column: 1
+        },
+        end: {
+          line: 3,
+          column: 4
         }
       }
     }

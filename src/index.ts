@@ -44,6 +44,7 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   const locationTracker = new LocationTracker(html);
   const bufArray: Node[] = [];
   const results: Node[] = [];
+  let lastOpenTagEndIndex = 0;
 
   function bufferArrayLast(): Node {
     return bufArray[bufArray.length - 1];
@@ -122,14 +123,14 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   }
 
   function onopentag(tag: string, attrs: Attributes) {
-    const start = locationTracker.getPosition(parser.startIndex);
     const buf: NodeTag = { tag };
 
     if (options.sourceLocations) {
       buf.location = {
-        start,
-        end: start
+        start: locationTracker.getPosition(parser.startIndex),
+        end: locationTracker.getPosition(parser.endIndex)
       };
+      lastOpenTagEndIndex = parser.endIndex;
     }
 
     if (Object.keys(attrs).length > 0) {
@@ -139,11 +140,15 @@ export const parser = (html: string, options: Options = {}): Node[] => {
     bufArray.push(buf);
   }
 
-  function onclosetag() {
+  function onclosetag(name: string, isImplied: boolean) {
     const buf: Node | undefined = bufArray.pop();
 
     if (buf && typeof buf === 'object' && buf.location && parser.endIndex !== null) {
-      buf.location.end = locationTracker.getPosition(parser.endIndex);
+      if (!isImplied) {
+        buf.location.end = locationTracker.getPosition(parser.endIndex);
+      } else if (lastOpenTagEndIndex < parser.startIndex) {
+        buf.location.end = locationTracker.getPosition(parser.startIndex - 1);
+      }
     }
 
     if (buf) {
