@@ -62,5 +62,8 @@
     "typescript": "^4.0.5",
     "xo": "^0.37.1"
   },
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ]
 }
