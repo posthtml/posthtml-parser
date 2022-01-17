@@ -1,5 +1,12 @@
+## <small>0.10.2 (2022-01-17)</small>
+
+* Decrease package size ([20d81a8](https://github.com/posthtml/posthtml-parser/commit/20d81a8)), closes [#85](https://github.com/posthtml/posthtml-parser/issues/85)
+
+
+
 ## <small>0.10.1 (2021-08-30)</small>
 
+* 0.10.1 ([c6fff56](https://github.com/posthtml/posthtml-parser/commit/c6fff56))
 * Force in something that works ([fb96d68](https://github.com/posthtml/posthtml-parser/commit/fb96d68))
 * Linting ([5166475](https://github.com/posthtml/posthtml-parser/commit/5166475))
 * Try and record previous indicies and rewrite if needed ([667ccf6](https://github.com/posthtml/posthtml-parser/commit/667ccf6))
