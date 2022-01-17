@@ -31,6 +31,9 @@
     "pretest": "clinton",
     "prepare": "npm run build"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "html",
     "xml",
