@@ -81,44 +81,49 @@ Tag objects can contain three keys. The `tag` key takes the name of the tag as t
 ## Options
 
 ### `directives`
-Type: `Array`  
-Default: `[{name: '!doctype', start: '<', end: '>'}]`   
-Description: *Adds processing of custom directives. Note: The property ```name``` in custom directives can be ```String``` or ```RegExp``` type*  
+Type: `Array`
+Default: `[{name: '!doctype', start: '<', end: '>'}]`
+Description: *Adds processing of custom directives. Note: The property ```name``` in custom directives can be ```String``` or ```RegExp``` type*
 
 ### `xmlMode`
-Type: `Boolean`  
-Default: `false`   
+Type: `Boolean`
+Default: `false`
 Description: *Indicates whether special tags (`<script>` and `<style>`) should get special treatment and if "empty" tags (eg. `<br>`) can have children. If false, the content of special tags will be text only. For feeds and other XML content (documents that don't consist of HTML), set this to true.*
 
 ### `decodeEntities`
-Type: `Boolean`  
-Default: `false`   
+Type: `Boolean`
+Default: `false`
 Description: *If set to true, entities within the document will be decoded.*
 
 ### `lowerCaseTags`
-Type: `Boolean`  
-Default: `false`   
+Type: `Boolean`
+Default: `false`
 Description: *If set to true, all tags will be lowercased. If `xmlMode` is disabled.*
 
 ### `lowerCaseAttributeNames`
-Type: `Boolean`  
-Default: `false`   
+Type: `Boolean`
+Default: `false`
 Description: *If set to true, all attribute names will be lowercased. This has noticeable impact on speed.*
 
 ### `recognizeCDATA`
-Type: `Boolean`  
-Default: `false`   
+Type: `Boolean`
+Default: `false`
 Description: *If set to true, CDATA sections will be recognized as text even if the `xmlMode` option is not enabled. NOTE: If `xmlMode` is set to `true` then CDATA sections will always be recognized as text.*
 
 ### `recognizeSelfClosing`
-Type: `Boolean`  
-Default: `false`   
+Type: `Boolean`
+Default: `false`
 Description: *If set to true, self-closing tags will trigger the `onclosetag` event even if `xmlMode` is not set to `true`. NOTE: If `xmlMode` is set to `true` then self-closing tags will always be recognized.*
 
-### `sourceLocations`  
-Type: `Boolean`  
-Default: `false`  
+### `sourceLocations`
+Type: `Boolean`
+Default: `false`
 Description: *If set to true, AST nodes will have a `location` property containing the `start` and `end` line and column position of the node.*
+
+### `recognizeNoValueAttribute`
+Type: `Boolean`
+Default: `false`
+Description: *If set to true, AST nodes will recognize attribute with no value and mark as `true` which will be correctly rendered by `posthtml-render` package*
 
 ## License
 
