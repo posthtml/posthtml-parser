@@ -1,5 +1,15 @@
+## 0.11.0 (2022-02-25)
+
+* build: update deps ([d1cdcc6](https://github.com/posthtml/posthtml-parser/commit/d1cdcc6))
+* test: add tests for `recognizeNoValueAttribute` option ([a2a2aa3](https://github.com/posthtml/posthtml-parser/commit/a2a2aa3))
+* docs: add description for `recognizeNoValueAttribute` option ([f9b165d](https://github.com/posthtml/posthtml-parser/commit/f9b165d))
+* feat: add `recognizeNoValueAttribute` option for issue #75 ([b992f28](https://github.com/posthtml/posthtml-parser/commit/b992f28)), closes [#75](https://github.com/posthtml/posthtml-parser/issues/75)
+
+
+
 ## <small>0.10.2 (2022-01-17)</small>
 
+* 0.10.2 ([8dffdba](https://github.com/posthtml/posthtml-parser/commit/8dffdba))
 * Decrease package size ([20d81a8](https://github.com/posthtml/posthtml-parser/commit/20d81a8)), closes [#85](https://github.com/posthtml/posthtml-parser/issues/85)
 
 
