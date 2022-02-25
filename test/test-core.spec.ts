@@ -370,3 +370,30 @@ test('should parse with input in button', t => {
   ];
   t.deepEqual(tree, expected);
 });
+
+test('should parse no value attribute as `true` when `recognizeNoValueAttribute` is `true` ', t => {
+  const tree = parser(
+    '<div class="className" hasClass>Content</div>',
+    { recognizeNoValueAttribute: true }
+  );
+  const expected = [
+    {
+      tag: 'div',
+      attrs: { class: 'className', hasClass: true },
+      content: ['Content']
+    }
+  ];
+  t.deepEqual(tree, expected);
+});
+
+test('should parse no value attribute as empty string when `recognizeNoValueAttribute` is `false` or not set ', t => {
+  const tree = parser('<div class="className" hasClass>Content</div>');
+  const expected = [
+    {
+      tag: 'div',
+      attrs: { class: 'className', hasClass: '' },
+      content: ['Content']
+    }
+  ];
+  t.deepEqual(tree, expected);
+});

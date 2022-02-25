@@ -10,6 +10,7 @@ export type Directive = {
 export type Options = {
   directives?: Directive[];
   sourceLocations?: boolean;
+  recognizeNoValueAttribute?: boolean;
 } & ParserOptions;
 
 export type Tag = string | boolean;
@@ -45,6 +46,7 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   const bufArray: Node[] = [];
   const results: Node[] = [];
   let lastOpenTagEndIndex = 0;
+  let noValueAttributes: Record<string, true> = {};
 
   function bufferArrayLast(): Node {
     return bufArray[bufArray.length - 1];
@@ -70,6 +72,11 @@ export const parser = (html: string, options: Options = {}): Node[] => {
       const object: Attributes = {};
 
       object[key] = String(attrs[key]).replace(/&quot;/g, '"');
+
+      if (options.recognizeNoValueAttribute && noValueAttributes[key]) {
+        object[key] = true;
+      }
+
       Object.assign(result, object);
     });
 
@@ -122,6 +129,17 @@ export const parser = (html: string, options: Options = {}): Node[] => {
     }
   }
 
+  function onattribute(name: string, value: string, quote?: string | undefined | null) {
+    // Quote: Quotes used around the attribute.
+    // `null` if the attribute has no quotes around the value,
+    // `undefined` if the attribute has no value.
+    if (quote === undefined) {
+      // `true` is recognized by posthtml-render as attrubute without value
+      // See: https://github.com/posthtml/posthtml-render/blob/master/src/index.ts#L268
+      noValueAttributes[name] = true;
+    }
+  }
+
   function onopentag(tag: string, attrs: Attributes) {
     const buf: NodeTag = { tag };
 
@@ -136,6 +154,10 @@ export const parser = (html: string, options: Options = {}): Node[] => {
     if (Object.keys(attrs).length > 0) {
       buf.attrs = normalizeArributes(attrs);
     }
+
+    // Always reset after normalizeArributes
+    // Reason: onopentag callback will fire after all attrubutes have been processed
+    noValueAttributes = {};
 
     bufArray.push(buf);
   }
@@ -201,6 +223,7 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   const parser = new Parser({
     onprocessinginstruction,
     oncomment,
+    onattribute,
     onopentag,
     onclosetag,
     ontext
