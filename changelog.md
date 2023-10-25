@@ -1,5 +1,21 @@
+## 0.12.0 (2023-10-25)
+
+* style: add prettier config ([40020ea](https://github.com/posthtml/posthtml-parser/commit/40020ea))
+* style: after lint ([4a25b30](https://github.com/posthtml/posthtml-parser/commit/4a25b30))
+* style: format ts ([18f3949](https://github.com/posthtml/posthtml-parser/commit/18f3949))
+* style: format ts ([b98a3e0](https://github.com/posthtml/posthtml-parser/commit/b98a3e0))
+* style: xo to eslint & updat edep dev & update husky ([016c1ec](https://github.com/posthtml/posthtml-parser/commit/016c1ec))
+* perf: drop support old nodejs ([6284a1d](https://github.com/posthtml/posthtml-parser/commit/6284a1d))
+* build: remove clinton ([1aca332](https://github.com/posthtml/posthtml-parser/commit/1aca332))
+* build: remove clinton config ([33961ca](https://github.com/posthtml/posthtml-parser/commit/33961ca))
+* build: remove unuset pkg ([6931aee](https://github.com/posthtml/posthtml-parser/commit/6931aee))
+* test: migrate to vitest ([b41b243](https://github.com/posthtml/posthtml-parser/commit/b41b243))
+
+
+
 ## 0.11.0 (2022-02-25)
 
+* 0.11.0 ([0db4129](https://github.com/posthtml/posthtml-parser/commit/0db4129))
 * build: update deps ([d1cdcc6](https://github.com/posthtml/posthtml-parser/commit/d1cdcc6))
 * test: add tests for `recognizeNoValueAttribute` option ([a2a2aa3](https://github.com/posthtml/posthtml-parser/commit/a2a2aa3))
 * docs: add description for `recognizeNoValueAttribute` option ([f9b165d](https://github.com/posthtml/posthtml-parser/commit/f9b165d))

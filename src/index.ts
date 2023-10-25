@@ -1,5 +1,5 @@
-import { Parser, ParserOptions } from 'htmlparser2';
-import { LocationTracker, SourceLocation } from './location-tracker';
+import { Parser, ParserOptions } from "htmlparser2";
+import { LocationTracker, SourceLocation } from "./location-tracker";
 
 export type Directive = {
   name: string | RegExp;
@@ -30,15 +30,15 @@ export type Node = NodeText | NodeTag;
 const defaultOptions: ParserOptions = {
   lowerCaseTags: false,
   lowerCaseAttributeNames: false,
-  decodeEntities: false
+  decodeEntities: false,
 };
 
 const defaultDirectives: Directive[] = [
   {
-    name: '!doctype',
-    start: '<',
-    end: '>'
-  }
+    name: "!doctype",
+    start: "<",
+    end: ">",
+  },
 ];
 
 export const parser = (html: string, options: Options = {}): Node[] => {
@@ -54,7 +54,7 @@ export const parser = (html: string, options: Options = {}): Node[] => {
 
   function isDirective(directive: Directive, tag: string): boolean {
     if (directive.name instanceof RegExp) {
-      const regex = new RegExp(directive.name.source, 'i');
+      const regex = new RegExp(directive.name.source, "i");
 
       return regex.test(tag);
     }
@@ -96,7 +96,7 @@ export const parser = (html: string, options: Options = {}): Node[] => {
           return;
         }
 
-        if (typeof last === 'object') {
+        if (typeof last === "object") {
           if (last.content === undefined) {
             last.content = [];
           }
@@ -118,7 +118,7 @@ export const parser = (html: string, options: Options = {}): Node[] => {
       return;
     }
 
-    if (typeof last === 'object') {
+    if (typeof last === "object") {
       if (last.content === undefined) {
         last.content = [];
       }
@@ -146,7 +146,7 @@ export const parser = (html: string, options: Options = {}): Node[] => {
     if (options.sourceLocations) {
       buf.location = {
         start: locationTracker.getPosition(parser.startIndex),
-        end: locationTracker.getPosition(parser.endIndex)
+        end: locationTracker.getPosition(parser.endIndex),
       };
       lastOpenTagEndIndex = parser.endIndex;
     }
@@ -165,7 +165,7 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   function onclosetag(name: string, isImplied: boolean) {
     const buf: Node | undefined = bufArray.pop();
 
-    if (buf && typeof buf === 'object' && buf.location && parser.endIndex !== null) {
+    if (buf && typeof buf === "object" && buf.location && parser.endIndex !== null) {
       if (!isImplied) {
         buf.location.end = locationTracker.getPosition(parser.endIndex);
       } else if (lastOpenTagEndIndex < parser.startIndex) {
@@ -181,7 +181,7 @@ export const parser = (html: string, options: Options = {}): Node[] => {
         return;
       }
 
-      if (typeof last === 'object') {
+      if (typeof last === "object") {
         if (last.content === undefined) {
           last.content = [];
         }
@@ -201,10 +201,10 @@ export const parser = (html: string, options: Options = {}): Node[] => {
       return;
     }
 
-    if (typeof last === 'object') {
+    if (typeof last === "object") {
       if (last.content && Array.isArray(last.content) && last.content.length > 0) {
         const lastContentNode = last.content[last.content.length - 1];
-        if (typeof lastContentNode === 'string' && !lastContentNode.startsWith('<!--')) {
+        if (typeof lastContentNode === "string" && !lastContentNode.startsWith("<!--")) {
           last.content[last.content.length - 1] = `${lastContentNode}${text}`;
           return;
         }
@@ -220,14 +220,17 @@ export const parser = (html: string, options: Options = {}): Node[] => {
     }
   }
 
-  const parser = new Parser({
-    onprocessinginstruction,
-    oncomment,
-    onattribute,
-    onopentag,
-    onclosetag,
-    ontext
-  }, { ...defaultOptions, ...options });
+  const parser = new Parser(
+    {
+      onprocessinginstruction,
+      oncomment,
+      onattribute,
+      onopentag,
+      onclosetag,
+      ontext,
+    },
+    { ...defaultOptions, ...options },
+  );
 
   parser.write(html);
   parser.end();

@@ -1,3 +1,3 @@
 {
-  "*.js": "xo"
+  "*.ts": ["npm run lint", "vitest related --run"]
 }
