@@ -1,19 +1,19 @@
 import { test, expect } from 'vitest';
 import { parser } from '../src';
 
-test('should be parse doctype in uppercase', (t) => {
+test('should be parse doctype in uppercase', () => {
   const tree = parser('<!DOCTYPE html>');
   const expected = ['<!DOCTYPE html>'];
   expect(tree).eql(expected);
 });
 
-test('should be parse comment', (t) => {
+test('should be parse comment', () => {
   const tree = parser('<!--comment-->');
   const expected = ['<!--comment-->'];
   expect(tree).eql(expected);
 });
 
-test('should be parse CDATA', (t) => {
+test('should be parse CDATA', () => {
   const tree = parser('<script><![CDATA[console.log(1);]]></script>', {
     xmlMode: true,
   });
@@ -21,7 +21,7 @@ test('should be parse CDATA', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should be parse tag with escape object in attribute', (t) => {
+test('should be parse tag with escape object in attribute', () => {
   const html =
     '<button data-bem="{&quot;button&quot;:{&quot;checkedView&quot;:&quot;extra&quot;}}"' +
     ' type="submit"></button>';
@@ -38,7 +38,7 @@ test('should be parse tag with escape object in attribute', (t) => {
   expect(tree).eql(expected);
 });
 
-test.skip('should be parse tag with object in attribute data witchout escape', (t) => {
+test.skip('should be parse tag with object in attribute data witchout escape', () => {
   const html =
     '<button data-bem="{"button":{"checkedView":"extra"}}"' +
     ' type="submit"></button>';
@@ -55,7 +55,7 @@ test.skip('should be parse tag with object in attribute data witchout escape', (
   expect(tree).eql(expected);
 });
 
-test.skip('should be parse tag with object in attribute data escape', (t) => {
+test.skip('should be parse tag with object in attribute data escape', () => {
   const json = JSON.stringify({ button: { checkedView: 'extra' } });
   const html = '<button data-bem="' + json + '"' + ' type="submit"></button>';
   const tree = parser(html);
@@ -71,13 +71,13 @@ test.skip('should be parse tag with object in attribute data escape', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should be parse isolated comment', (t) => {
+test('should be parse isolated comment', () => {
   const tree = parser('<div><!--comment--></div>');
   const expected = [{ tag: 'div', content: ['<!--comment-->'] }];
   expect(tree).eql(expected);
 });
 
-test('should be parse comment before text content', (t) => {
+test('should be parse comment before text content', () => {
   const tree = parser('<div><!--comment-->Text after comment</div>');
   const expected = [
     { tag: 'div', content: ['<!--comment-->', 'Text after comment'] },
@@ -85,7 +85,7 @@ test('should be parse comment before text content', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should be parse comment after text content', (t) => {
+test('should be parse comment after text content', () => {
   const tree = parser('<div>Text before comment.<!--comment--></div>');
   const expected = [
     { tag: 'div', content: ['Text before comment.', '<!--comment-->'] },
@@ -93,7 +93,7 @@ test('should be parse comment after text content', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should be parse comment in the middle of text content', (t) => {
+test('should be parse comment in the middle of text content', () => {
   const tree = parser('<div>Text surrounding <!--comment--> a comment.</div>');
   const expected = [
     {
@@ -104,13 +104,13 @@ test('should be parse comment in the middle of text content', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should be parse doctype', (t) => {
+test('should be parse doctype', () => {
   const tree = parser('<!doctype html>');
   const expected = ['<!doctype html>'];
   expect(tree).eql(expected);
 });
 
-test('should be parse directive', (t) => {
+test('should be parse directive', () => {
   const options = {
     directives: [{ name: '?php', start: '<', end: '>' }],
   };
@@ -119,7 +119,7 @@ test('should be parse directive', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should be parse regular expression directive', (t) => {
+test('should be parse regular expression directive', () => {
   const options = {
     directives: [{ name: /\?(php|=).*/, start: '<', end: '>' }],
   };
@@ -132,7 +132,7 @@ test('should be parse regular expression directive', (t) => {
   expect(tree2).eql(expected2);
 });
 
-test('should be parse directives and tag', (t) => {
+test('should be parse directives and tag', () => {
   const options = {
     directives: [
       { name: '!doctype', start: '<', end: '>' },
@@ -156,19 +156,19 @@ test('should be parse directives and tag', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should be parse tag', (t) => {
+test('should be parse tag', () => {
   const tree = parser('<html></html>');
   const expected = [{ tag: 'html' }];
   expect(tree).eql(expected);
 });
 
-test('should be parse doctype and tag', (t) => {
+test('should be parse doctype and tag', () => {
   const tree = parser('<!doctype html><html></html>');
   const expected = ['<!doctype html>', { tag: 'html' }];
   expect(tree).eql(expected);
 });
 
-test('should be parse tag attrs', (t) => {
+test('should be parse tag attrs', () => {
   const tree = parser('<div id="id" class="class"></div>');
   const expected = [
     {
@@ -179,19 +179,19 @@ test('should be parse tag attrs', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should be parse text', (t) => {
+test('should be parse text', () => {
   const tree = parser('Text');
   const expected = ['Text'];
   expect(tree).eql(expected);
 });
 
-test('should be parse text in content', (t) => {
+test('should be parse text in content', () => {
   const tree = parser('<div>Text</div>');
   const expected = [{ tag: 'div', content: ['Text'] }];
   expect(tree).eql(expected);
 });
 
-test('should be parse not a single node in tree', (t) => {
+test('should be parse not a single node in tree', () => {
   const tree = parser('<span>Text1</span><span>Text2</span>Text3');
   const expected = [
     { tag: 'span', content: ['Text1'] },
@@ -201,7 +201,7 @@ test('should be parse not a single node in tree', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should be parse not a single node in parent content', (t) => {
+test('should be parse not a single node in parent content', () => {
   const tree = parser('<div><span>Text1</span><span>Text2</span>Text3</div>');
   const expected = [
     {
@@ -216,13 +216,13 @@ test('should be parse not a single node in parent content', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should be parse camelCase tag name', (t) => {
+test('should be parse camelCase tag name', () => {
   const tree = parser('<mySuperTag></mySuperTag>');
   const expected = [{ tag: 'mySuperTag' }];
   expect(tree).eql(expected);
 });
 
-test('should be parse simple contents are split with "<" in comment', (t) => {
+test('should be parse simple contents are split with "<" in comment', () => {
   const html = '<a> /* width < 800px */ <hr /> test</a>';
   const tree = parser(html);
   const expected = [
@@ -231,7 +231,7 @@ test('should be parse simple contents are split with "<" in comment', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should be parse style contents are split with "<" in comment', (t) => {
+test('should be parse style contents are split with "<" in comment', () => {
   const html =
     '<style> /* width < 800px */ @media (max-width: 800px) { /* selectors */} </style>';
   const tree = parser(html);
@@ -246,7 +246,7 @@ test('should be parse style contents are split with "<" in comment', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should be parse script contents are split with "<" in comment', (t) => {
+test('should be parse script contents are split with "<" in comment', () => {
   const html =
     "<script> var str = 'hey <form'; if (!str.match(new RegExp('<(form|iframe)', 'g'))) { /* ... */ }</script>";
   const tree = parser(html);
@@ -261,14 +261,14 @@ test('should be parse script contents are split with "<" in comment', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should be not converting html entity name', (t) => {
+test('should be not converting html entity name', () => {
   const html = '&zwnj;&nbsp;&copy;';
   const tree = parser(html);
   const expected = ['&zwnj;&nbsp;&copy;'];
   expect(tree).eql(expected);
 });
 
-test('should parse with source locations', (t) => {
+test('should parse with source locations', () => {
   const html = '<h1>Test</h1>\n<p><b>Foo</b><hr></p><p>Bar\n<hr>';
   const tree = parser(html, { sourceLocations: true });
   const expected = [
@@ -373,7 +373,7 @@ test('should parse with source locations', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should parse with input in button', (t) => {
+test('should parse with input in button', () => {
   const html =
     '<button >Hello <input type="file" ng-hide="true" />PostHtml</button>';
   const tree = parser(html, { xmlMode: true });
@@ -396,7 +396,7 @@ test('should parse with input in button', (t) => {
   expect(tree).eql(expected);
 });
 
-test('should parse no value attribute as `true` when `recognizeNoValueAttribute` is `true` ', (t) => {
+test('should parse no value attribute as `true` when `recognizeNoValueAttribute` is `true` ', () => {
   const tree = parser('<div class="className" hasClass>Content</div>', {
     recognizeNoValueAttribute: true,
   });
@@ -410,7 +410,7 @@ test('should parse no value attribute as `true` when `recognizeNoValueAttribute`
   expect(tree).eql(expected);
 });
 
-test('should parse no value attribute as empty string when `recognizeNoValueAttribute` is `false` or not set ', (t) => {
+test('should parse no value attribute as empty string when `recognizeNoValueAttribute` is `false` or not set ', () => {
   const tree = parser('<div class="className" hasClass>Content</div>');
   const expected = [
     {
