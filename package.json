@@ -28,7 +28,6 @@
     "build": "rm -rf dist && tsup src/*.ts --dts --minify",
     "dev": "npm run build -- --watch",
     "test": "xo && c8 ava",
-    "pretest": "clinton",
     "prepare": "npm run build"
   },
   "files": [
@@ -51,7 +50,6 @@
     "@types/node": "^14.14.25",
     "ava": "^3.13.0",
     "c8": "^7.5.0",
-    "clinton": "^0.14.0",
     "conventional-changelog-cli": "^2.0.34",
     "esbuild-register": "^2.0.0",
     "eslint": "^7.19.0",
