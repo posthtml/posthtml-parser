@@ -17,7 +17,7 @@ export class LocationTracker {
     this.source = source;
     this.lastPosition = {
       line: 1,
-      column: 1
+      column: 1,
     };
 
     this.lastIndex = 0;
@@ -25,7 +25,7 @@ export class LocationTracker {
 
   getPosition(index: number): Position {
     if (index < this.lastIndex) {
-      throw new Error('Source indices must be monotonic');
+      throw new Error("Source indices must be monotonic");
     }
 
     while (this.lastIndex < index) {
@@ -41,7 +41,7 @@ export class LocationTracker {
 
     return {
       line: this.lastPosition.line,
-      column: this.lastPosition.column
+      column: this.lastPosition.column,
     };
   }
 }
