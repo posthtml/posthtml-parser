@@ -1,5 +1,17 @@
+## <small>0.12.1 (2024-09-19)</small>
+
+* build(deps-dev): bump braces from 3.0.2 to 3.0.3 ([5faad33](https://github.com/posthtml/posthtml-parser/commit/5faad33))
+* build(deps-dev): bump vite from 4.5.0 to 5.0.12 ([3a9b449](https://github.com/posthtml/posthtml-parser/commit/3a9b449))
+* build(deps-dev): bump vite from 5.0.12 to 5.2.8 ([b4a5619](https://github.com/posthtml/posthtml-parser/commit/b4a5619))
+* build(deps): bump vite from 5.2.8 to 5.4.6 ([76ecd34](https://github.com/posthtml/posthtml-parser/commit/76ecd34))
+* docs: update readme.md ([965792d](https://github.com/posthtml/posthtml-parser/commit/965792d))
+* ci: update github workflow ([10aa89e](https://github.com/posthtml/posthtml-parser/commit/10aa89e))
+
+
+
 ## 0.12.0 (2023-10-25)
 
+* 0.12.0 ([5a63bdd](https://github.com/posthtml/posthtml-parser/commit/5a63bdd))
 * style: add prettier config ([40020ea](https://github.com/posthtml/posthtml-parser/commit/40020ea))
 * style: after lint ([4a25b30](https://github.com/posthtml/posthtml-parser/commit/4a25b30))
 * style: format ts ([18f3949](https://github.com/posthtml/posthtml-parser/commit/18f3949))
