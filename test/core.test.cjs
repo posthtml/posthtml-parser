@@ -1,16 +1,17 @@
-import { test, expect } from "vitest";
-import { parser } from "../src";
+const { test } = require("node:test");
+const assert = require("node:assert/strict");
+const { parser } = require(process.env.POSTHTML_PARSER_PACKAGE || "..");
 
 test("should be parse doctype in uppercase", () => {
   const tree = parser("<!DOCTYPE html>");
   const expected = ["<!DOCTYPE html>"];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse comment", () => {
   const tree = parser("<!--comment-->");
   const expected = ["<!--comment-->"];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse CDATA", () => {
@@ -18,7 +19,7 @@ test("should be parse CDATA", () => {
     xmlMode: true,
   });
   const expected = [{ tag: "script", content: ["console.log(1);"] }];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse tag with escape object in attribute", () => {
@@ -34,7 +35,7 @@ test("should be parse tag with escape object in attribute", () => {
       },
     },
   ];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test.skip("should be parse tag with object in attribute data witchout escape", () => {
@@ -49,7 +50,7 @@ test.skip("should be parse tag with object in attribute data witchout escape", (
       },
     },
   ];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test.skip("should be parse tag with object in attribute data escape", () => {
@@ -65,25 +66,25 @@ test.skip("should be parse tag with object in attribute data escape", () => {
       },
     },
   ];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse isolated comment", () => {
   const tree = parser("<div><!--comment--></div>");
   const expected = [{ tag: "div", content: ["<!--comment-->"] }];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse comment before text content", () => {
   const tree = parser("<div><!--comment-->Text after comment</div>");
   const expected = [{ tag: "div", content: ["<!--comment-->", "Text after comment"] }];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse comment after text content", () => {
   const tree = parser("<div>Text before comment.<!--comment--></div>");
   const expected = [{ tag: "div", content: ["Text before comment.", "<!--comment-->"] }];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse comment in the middle of text content", () => {
@@ -94,13 +95,13 @@ test("should be parse comment in the middle of text content", () => {
       content: ["Text surrounding ", "<!--comment-->", " a comment."],
     },
   ];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse doctype", () => {
   const tree = parser("<!doctype html>");
   const expected = ["<!doctype html>"];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse directive", () => {
@@ -109,7 +110,7 @@ test("should be parse directive", () => {
   };
   const tree = parser('<?php echo "Hello word"; ?>', options);
   const expected = ['<?php echo "Hello word"; ?>'];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse regular expression directive", () => {
@@ -121,8 +122,8 @@ test("should be parse regular expression directive", () => {
   const tree2 = parser('<?="Hello word"?>', options);
   const expected2 = ['<?="Hello word"?>'];
 
-  expect(tree1).eql(expected1);
-  expect(tree2).eql(expected2);
+  assert.deepEqual(tree1, expected1);
+  assert.deepEqual(tree2, expected2);
 });
 
 test("should be parse directives and tag", () => {
@@ -145,7 +146,7 @@ test("should be parse directives and tag", () => {
       tag: "body",
     },
   ];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should preserve custom HTML declarations", () => {
@@ -153,7 +154,7 @@ test("should preserve custom HTML declarations", () => {
     directives: [{ name: "!custom", start: "<", end: ">" }],
   });
 
-  expect(tree).eql(["<!CUSTOM content>", { tag: "div", content: ["Text"] }]);
+  assert.deepEqual(tree, ["<!CUSTOM content>", { tag: "div", content: ["Text"] }]);
 });
 
 test("should preserve comments that look like directives", () => {
@@ -165,7 +166,7 @@ test("should preserve comments that look like directives", () => {
     ],
   });
 
-  expect(tree).eql(["<!--?php echo 1; ?-->", "<!--!CUSTOM content-->"]);
+  assert.deepEqual(tree, ["<!--?php echo 1; ?-->", "<!--!CUSTOM content-->"]);
 });
 
 test("should preserve XML processing instruction delimiters", () => {
@@ -174,7 +175,7 @@ test("should preserve XML processing instruction delimiters", () => {
     directives: [{ name: "?xml", start: "<", end: ">" }],
   });
 
-  expect(tree).eql(['<?xml version="1.0"?>', { tag: "Root" }]);
+  assert.deepEqual(tree, ['<?xml version="1.0"?>', { tag: "Root" }]);
 });
 
 test("should preserve source locations after a processing instruction", () => {
@@ -185,7 +186,7 @@ test("should preserve source locations after a processing instruction", () => {
     directives: [{ name: "?xml", start: "<", end: ">" }],
   });
 
-  expect(tree).eql([
+  assert.deepEqual(tree, [
     instruction,
     "\n",
     {
@@ -203,34 +204,36 @@ test("should preserve custom directive delimiters", () => {
     directives: [{ name: "?php", start: "[", end: "]" }],
   });
 
-  expect(tree).eql(["[?php echo 1; ?]"]);
+  assert.deepEqual(tree, ["[?php echo 1; ?]"]);
 });
 
-test.each([
+for (const instruction of [
   '<?xml version="1.0"?>',
   '<?xml version="1.0"?><?xml version="1.0"?>',
-])("should locate a tag immediately after XML instructions: %s", (instruction) => {
-  const tree = parser(`${instruction}<Root />`, {
-    xmlMode: true,
-    sourceLocations: true,
-  });
+]) {
+  test(`should locate a tag immediately after XML instructions: ${instruction}`, () => {
+    const tree = parser(`${instruction}<Root />`, {
+      xmlMode: true,
+      sourceLocations: true,
+    });
 
-  expect(tree).eql([
-    {
-      tag: "Root",
-      location: {
-        start: { line: 1, column: instruction.length + 1 },
-        end: { line: 1, column: instruction.length + 8 },
+    assert.deepEqual(tree, [
+      {
+        tag: "Root",
+        location: {
+          start: { line: 1, column: instruction.length + 1 },
+          end: { line: 1, column: instruction.length + 8 },
+        },
       },
-    },
-  ]);
-});
+    ]);
+  });
+}
 
 test("should locate an implied close after an XML instruction", () => {
   const html = '<Root><?xml version="1.0"?>';
   const tree = parser(html, { xmlMode: true, sourceLocations: true });
 
-  expect(tree).eql([
+  assert.deepEqual(tree, [
     {
       tag: "Root",
       location: {
@@ -246,7 +249,7 @@ test("should honor lowerCaseTags for SVG tags", () => {
     lowerCaseTags: true,
   });
 
-  expect(tree).eql([
+  assert.deepEqual(tree, [
     {
       tag: "svg",
       content: [
@@ -258,10 +261,10 @@ test("should honor lowerCaseTags for SVG tags", () => {
 });
 
 test("should decode textarea entities when requested", () => {
-  expect(parser("<textarea>&amp;</textarea>")).eql([
+  assert.deepEqual(parser("<textarea>&amp;</textarea>"), [
     { tag: "textarea", content: ["&amp;"] },
   ]);
-  expect(parser("<textarea>&amp;</textarea>", { decodeEntities: true })).eql([
+  assert.deepEqual(parser("<textarea>&amp;</textarea>", { decodeEntities: true }), [
     { tag: "textarea", content: ["&"] },
   ]);
 });
@@ -269,10 +272,10 @@ test("should decode textarea entities when requested", () => {
 test("should decode entities only when requested", () => {
   const html = '<div title="&amp;">&amp;&#x1F600;</div>';
 
-  expect(parser(html)).eql([
+  assert.deepEqual(parser(html), [
     { tag: "div", attrs: { title: "&amp;" }, content: ["&amp;&#x1F600;"] },
   ]);
-  expect(parser(html, { decodeEntities: true })).eql([
+  assert.deepEqual(parser(html, { decodeEntities: true }), [
     { tag: "div", attrs: { title: "&" }, content: ["&😀"] },
   ]);
 });
@@ -280,13 +283,13 @@ test("should decode entities only when requested", () => {
 test("should be parse tag", () => {
   const tree = parser("<html></html>");
   const expected = [{ tag: "html" }];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse doctype and tag", () => {
   const tree = parser("<!doctype html><html></html>");
   const expected = ["<!doctype html>", { tag: "html" }];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse tag attrs", () => {
@@ -297,25 +300,25 @@ test("should be parse tag attrs", () => {
       attrs: { id: "id", class: "class" },
     },
   ];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse text", () => {
   const tree = parser("Text");
   const expected = ["Text"];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse text in content", () => {
   const tree = parser("<div>Text</div>");
   const expected = [{ tag: "div", content: ["Text"] }];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse not a single node in tree", () => {
   const tree = parser("<span>Text1</span><span>Text2</span>Text3");
   const expected = [{ tag: "span", content: ["Text1"] }, { tag: "span", content: ["Text2"] }, "Text3"];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse not a single node in parent content", () => {
@@ -326,20 +329,20 @@ test("should be parse not a single node in parent content", () => {
       content: [{ tag: "span", content: ["Text1"] }, { tag: "span", content: ["Text2"] }, "Text3"],
     },
   ];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be parse camelCase tag name", () => {
   const tree = parser("<mySuperTag></mySuperTag>");
   const expected = [{ tag: "mySuperTag" }];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test('should be parse simple contents are split with "<" in comment', () => {
   const html = "<a> /* width < 800px */ <hr /> test</a>";
   const tree = parser(html);
   const expected = [{ tag: "a", content: [" /* width < 800px */ ", { tag: "hr" }, " test"] }];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test('should be parse style contents are split with "<" in comment', () => {
@@ -351,7 +354,7 @@ test('should be parse style contents are split with "<" in comment', () => {
       content: [" /* width < 800px */ @media (max-width: 800px) { /* selectors */} "],
     },
   ];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test('should be parse script contents are split with "<" in comment', () => {
@@ -364,14 +367,14 @@ test('should be parse script contents are split with "<" in comment', () => {
       content: [" var str = 'hey <form'; if (!str.match(new RegExp('<(form|iframe)', 'g'))) { /* ... */ }"],
     },
   ];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should be not converting html entity name", () => {
   const html = "&zwnj;&nbsp;&copy;";
   const tree = parser(html);
   const expected = ["&zwnj;&nbsp;&copy;"];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should parse with source locations", () => {
@@ -476,7 +479,7 @@ test("should parse with source locations", () => {
       },
     },
   ];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should parse with input in button", () => {
@@ -498,7 +501,7 @@ test("should parse with input in button", () => {
       ],
     },
   ];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should parse no value attribute as `true` when `recognizeNoValueAttribute` is `true` ", () => {
@@ -512,7 +515,7 @@ test("should parse no value attribute as `true` when `recognizeNoValueAttribute`
       content: ["Content"],
     },
   ];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });
 
 test("should parse no value attribute as empty string when `recognizeNoValueAttribute` is `false` or not set ", () => {
@@ -524,5 +527,5 @@ test("should parse no value attribute as empty string when `recognizeNoValueAttr
       content: ["Content"],
     },
   ];
-  expect(tree).eql(expected);
+  assert.deepEqual(tree, expected);
 });

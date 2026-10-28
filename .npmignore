@@ -1,6 +1,0 @@
-node_modules
-.gitignore
-.travis.yml
-coverage
-.nyc_output
-src
