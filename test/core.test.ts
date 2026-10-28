@@ -148,6 +148,135 @@ test("should be parse directives and tag", () => {
   expect(tree).eql(expected);
 });
 
+test("should preserve custom HTML declarations", () => {
+  const tree = parser("<!CUSTOM content><div>Text</div>", {
+    directives: [{ name: "!custom", start: "<", end: ">" }],
+  });
+
+  expect(tree).eql(["<!CUSTOM content>", { tag: "div", content: ["Text"] }]);
+});
+
+test("should preserve comments that look like directives", () => {
+  const html = "<!--?php echo 1; ?--><!--!CUSTOM content-->";
+  const tree = parser(html, {
+    directives: [
+      { name: "?php", start: "<", end: ">" },
+      { name: "!custom", start: "<", end: ">" },
+    ],
+  });
+
+  expect(tree).eql(["<!--?php echo 1; ?-->", "<!--!CUSTOM content-->"]);
+});
+
+test("should preserve XML processing instruction delimiters", () => {
+  const tree = parser('<?xml version="1.0"?><Root />', {
+    xmlMode: true,
+    directives: [{ name: "?xml", start: "<", end: ">" }],
+  });
+
+  expect(tree).eql(['<?xml version="1.0"?>', { tag: "Root" }]);
+});
+
+test("should preserve source locations after a processing instruction", () => {
+  const instruction = '<?xml version="1.0"?>';
+  const tree = parser(`${instruction}\n<Root />`, {
+    xmlMode: true,
+    sourceLocations: true,
+    directives: [{ name: "?xml", start: "<", end: ">" }],
+  });
+
+  expect(tree).eql([
+    instruction,
+    "\n",
+    {
+      tag: "Root",
+      location: {
+        start: { line: 2, column: 1 },
+        end: { line: 2, column: 8 },
+      },
+    },
+  ]);
+});
+
+test("should preserve custom directive delimiters", () => {
+  const tree = parser("<?php echo 1; ?>", {
+    directives: [{ name: "?php", start: "[", end: "]" }],
+  });
+
+  expect(tree).eql(["[?php echo 1; ?]"]);
+});
+
+test.each([
+  '<?xml version="1.0"?>',
+  '<?xml version="1.0"?><?xml version="1.0"?>',
+])("should locate a tag immediately after XML instructions: %s", (instruction) => {
+  const tree = parser(`${instruction}<Root />`, {
+    xmlMode: true,
+    sourceLocations: true,
+  });
+
+  expect(tree).eql([
+    {
+      tag: "Root",
+      location: {
+        start: { line: 1, column: instruction.length + 1 },
+        end: { line: 1, column: instruction.length + 8 },
+      },
+    },
+  ]);
+});
+
+test("should locate an implied close after an XML instruction", () => {
+  const html = '<Root><?xml version="1.0"?>';
+  const tree = parser(html, { xmlMode: true, sourceLocations: true });
+
+  expect(tree).eql([
+    {
+      tag: "Root",
+      location: {
+        start: { line: 1, column: 1 },
+        end: { line: 1, column: html.length },
+      },
+    },
+  ]);
+});
+
+test("should honor lowerCaseTags for SVG tags", () => {
+  const tree = parser('<svg><linearGradient id="a"/><foreignObject><DIV>Text</DIV></foreignObject></svg>', {
+    lowerCaseTags: true,
+  });
+
+  expect(tree).eql([
+    {
+      tag: "svg",
+      content: [
+        { tag: "lineargradient", attrs: { id: "a" } },
+        { tag: "foreignobject", content: [{ tag: "div", content: ["Text"] }] },
+      ],
+    },
+  ]);
+});
+
+test("should decode textarea entities when requested", () => {
+  expect(parser("<textarea>&amp;</textarea>")).eql([
+    { tag: "textarea", content: ["&amp;"] },
+  ]);
+  expect(parser("<textarea>&amp;</textarea>", { decodeEntities: true })).eql([
+    { tag: "textarea", content: ["&"] },
+  ]);
+});
+
+test("should decode entities only when requested", () => {
+  const html = '<div title="&amp;">&amp;&#x1F600;</div>';
+
+  expect(parser(html)).eql([
+    { tag: "div", attrs: { title: "&amp;" }, content: ["&amp;&#x1F600;"] },
+  ]);
+  expect(parser(html, { decodeEntities: true })).eql([
+    { tag: "div", attrs: { title: "&" }, content: ["&😀"] },
+  ]);
+});
+
 test("should be parse tag", () => {
   const tree = parser("<html></html>");
   const expected = [{ tag: "html" }];

@@ -1,3 +1,21 @@
+## Unreleased
+
+### Breaking Changes
+
+* Upgrade `htmlparser2` from version 9 to version 12.
+* Require Node.js `^20.19.0 || >=22.12.0` for synchronous loading of the ESM-only backend.
+* Require TypeScript 5.3 or later for the published type declarations.
+
+### Compatibility
+
+* Preserve HTML directives and custom declarations, including PHP instructions, with the updated parser callbacks.
+* Preserve XML processing-instruction delimiters and verify native CommonJS/ESM loading and consumer types.
+* Preserve source locations immediately after XML instructions and the `lowerCaseTags` option for SVG elements.
+
+### Changed
+
+* With `decodeEntities: true`, entities in `textarea` content are now decoded, consistent with other text content. Previously `htmlparser2` left them encoded in this case.
+
 ## <small>0.12.1 (2024-09-19)</small>
 
 * build(deps-dev): bump braces from 3.0.2 to 3.0.3 ([5faad33](https://github.com/posthtml/posthtml-parser/commit/5faad33))
@@ -372,6 +390,4 @@
 * add package.json ([3daf4bc](https://github.com/posthtml/posthtml-parser/commit/3daf4bc))
 * basic ([2e38720](https://github.com/posthtml/posthtml-parser/commit/2e38720))
 * Initial commit ([285d87f](https://github.com/posthtml/posthtml-parser/commit/285d87f))
-
-
 

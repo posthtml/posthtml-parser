@@ -12,6 +12,10 @@
 
 ## Installation
 
+Requires Node.js `^20.19.0 || >=22.12.0`. These versions support synchronous CommonJS loading of the ESM-only `htmlparser2` backend. Both `require()` and native ESM imports expose the synchronous `parser` API.
+
+TypeScript consumers need TypeScript 5.3 or later. For development, use Node.js 24 (`nvm install && nvm use`).
+
 ```sh
 npm install posthtml-parser
 ```
