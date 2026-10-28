@@ -21,15 +21,17 @@
   ],
   "main": "dist",
   "engines": {
-    "node": ">=16"
+    "node": "^20.19.0 || >=22.12.0"
   },
   "scripts": {
     "version": "conventional-changelog -i changelog.md -s -r 0 && git add changelog.md",
-    "build": "rm -rf dist && tsup src/*.ts --dts --minify",
+    "build": "rm -rf dist && tsup src/*.ts --minify && tsc --declaration --emitDeclarationOnly --outDir dist",
     "dev": "npm run build -- --watch",
     "test": "vitest run --coverage",
+    "test:package": "node test/package.cjs",
     "prepare": "husky install && npm run build",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json && tsc --noEmit -p test/types/tsconfig.json"
   },
   "files": [
     "dist"
@@ -42,20 +44,21 @@
     "posthtmltree"
   ],
   "dependencies": {
-    "htmlparser2": "^9.0.0"
+    "htmlparser2": "^12.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.0.0",
     "@commitlint/config-angular": "^18.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.9.0",
-    "@typescript-eslint/parser": "^6.9.0",
+    "@types/node": "^20.19.0",
+    "@typescript-eslint/eslint-plugin": "^8.72.1",
+    "@typescript-eslint/parser": "^8.72.1",
     "@vitest/coverage-v8": "^0.34.6",
     "conventional-changelog-cli": "^4.1.0",
-    "eslint": "^8.52.0",
+    "eslint": "^8.57.1",
     "husky": "^8.0.3",
     "lint-staged": "^15.0.2",
-    "tsup": "^7.2.0",
-    "typescript": "^5.2.2",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
     "vitest": "^0.34.6"
   },
   "types": "dist/index.d.ts"

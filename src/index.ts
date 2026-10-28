@@ -1,4 +1,5 @@
-import { Parser, ParserOptions } from "htmlparser2";
+import { Parser } from "htmlparser2";
+import type { ParserOptions } from "htmlparser2" with { "resolution-mode": "import" };
 import { LocationTracker, SourceLocation } from "./location-tracker";
 
 export type Directive = {
@@ -46,10 +47,18 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   const bufArray: Node[] = [];
   const results: Node[] = [];
   let lastOpenTagEndIndex = 0;
+  let lastInstructionEndIndex = -1;
   let noValueAttributes: Record<string, true> = {};
 
   function bufferArrayLast(): Node {
     return bufArray[bufArray.length - 1];
+  }
+
+  function sourceStartIndex(): number {
+    // XML instructions leave htmlparser2's next start index on the final `>`.
+    return parser.startIndex === lastInstructionEndIndex
+      ? parser.startIndex + 1
+      : parser.startIndex;
   }
 
   function isDirective(directive: Directive, tag: string): boolean {
@@ -84,6 +93,12 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   }
 
   function onprocessinginstruction(name: string, data: string) {
+    // htmlparser2 excludes the closing question mark from XML instructions.
+    if (options.xmlMode && html[parser.endIndex] === "?" && html[parser.endIndex + 1] === ">") {
+      data += "?";
+      lastInstructionEndIndex = parser.endIndex + 1;
+    }
+
     const directives = defaultDirectives.concat(options.directives ?? []);
     const last = bufferArrayLast();
 
@@ -110,6 +125,22 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   }
 
   function oncomment(data: string) {
+    // In HTML mode, htmlparser2 reports processing instructions and non-doctype
+    // declarations as bogus comments. Preserve PostHTML's directives API.
+    const start = parser.startIndex;
+    const isInstruction = html.startsWith("<?", start);
+    const isDeclaration =
+      html.startsWith("<!", start) &&
+      !html.startsWith("<!--", start) &&
+      !html.startsWith("<![CDATA[", start);
+
+    if (isInstruction || isDeclaration) {
+      const instruction = isDeclaration ? `!${data}` : data;
+      const name = instruction.split(/[\s/]/, 1)[0];
+      onprocessinginstruction(name, instruction);
+      return;
+    }
+
     const last = bufferArrayLast();
     const comment = `<!--${data}-->`;
 
@@ -141,11 +172,11 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   }
 
   function onopentag(tag: string, attrs: Attributes) {
-    const buf: NodeTag = { tag };
+    const buf: NodeTag = { tag: options.lowerCaseTags ? tag.toLowerCase() : tag };
 
     if (options.sourceLocations) {
       buf.location = {
-        start: locationTracker.getPosition(parser.startIndex),
+        start: locationTracker.getPosition(sourceStartIndex()),
         end: locationTracker.getPosition(parser.endIndex),
       };
       lastOpenTagEndIndex = parser.endIndex;
@@ -166,10 +197,11 @@ export const parser = (html: string, options: Options = {}): Node[] => {
     const buf: Node | undefined = bufArray.pop();
 
     if (buf && typeof buf === "object" && buf.location && parser.endIndex !== null) {
+      const startIndex = sourceStartIndex();
       if (!isImplied) {
         buf.location.end = locationTracker.getPosition(parser.endIndex);
-      } else if (lastOpenTagEndIndex < parser.startIndex) {
-        buf.location.end = locationTracker.getPosition(parser.startIndex - 1);
+      } else if (lastOpenTagEndIndex < startIndex) {
+        buf.location.end = locationTracker.getPosition(startIndex - 1);
       }
     }
 
