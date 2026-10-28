@@ -29,7 +29,7 @@ CI runs the checks on Node.js 24, builds one npm tarball, then installs its prod
 
 The changelog is maintained by hand so release notes and historical entries are preserved.
 
-1. Prepare a release pull request. For the next breaking 0.x release, update the package and lockfile without creating a commit or tag:
+1. Prepare a release pull request. Update the package and lockfile without creating a commit or tag. For example, a breaking 0.x release after `0.12.x`:
 
    ```sh
    npm version 0.13.0 --no-git-tag-version
@@ -37,5 +37,5 @@ The changelog is maintained by hand so release notes and historical entries are 
 
 2. Turn the `Unreleased` notes into a versioned, dated entry and start a new `Unreleased` section above it, keeping the previous history intact.
 3. Run `npm run check` and commit the version files and changelog together.
-4. After the release pull request is merged, update `master`, tag the release commit as `v0.13.0`, and push the tag.
+4. After the release pull request is merged, update `master`, tag the release commit with its version (`v0.13.0` in this example), and push the tag.
 5. Publish that checkout with `npm publish`. The `prepublishOnly` script runs the full check again before publishing.

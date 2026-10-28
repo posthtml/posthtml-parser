@@ -1,5 +1,7 @@
 ## Unreleased
 
+## 0.13.0 (2026-10-28)
+
 ### Breaking Changes
 
 * Upgrade `htmlparser2` from version 9 to version 12.
