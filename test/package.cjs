@@ -37,7 +37,7 @@ function checkParser(parser) {
 }
 
 async function main() {
-  const entry = require.resolve(process.argv[2] || "..");
+  const entry = require.resolve(process.argv[2] || process.env.POSTHTML_PARSER_PACKAGE || "..");
   checkParser(require(entry).parser);
   checkParser((await import(pathToFileURL(entry).href)).parser);
   console.log("Package checks passed (CommonJS and native ESM).");

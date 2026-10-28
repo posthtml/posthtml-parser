@@ -1,0 +1,7 @@
+{
+  "all": true,
+  "extension": [".ts"],
+  "include": ["src/**/*.ts"],
+  "exclude-after-remap": true,
+  "reporter": ["lcov", "text"]
+}

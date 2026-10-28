@@ -16,6 +16,16 @@
 
 * With `decodeEntities: true`, entities in `textarea` content are now decoded, consistent with other text content. Previously `htmlparser2` left them encoded in this case.
 
+### Development
+
+* Use the built-in Node.js test runner and assertions, with c8 for source coverage.
+* Compile JavaScript, declarations, and source maps directly with TypeScript.
+* Update ESLint to flat config and document contributing and releases in `.github`.
+* Remove local Git hooks, commit-message linting, and changelog generation dependencies; maintain release notes by hand.
+* Store coverage reports as GitHub Actions artifacts.
+* Build and check on Node.js 24, then run the full test suite against an installed npm tarball on every supported runtime.
+* Run the full check before publishing.
+
 ## <small>0.12.1 (2024-09-19)</small>
 
 * build(deps-dev): bump braces from 3.0.2 to 3.0.3 ([5faad33](https://github.com/posthtml/posthtml-parser/commit/5faad33))
@@ -390,4 +400,3 @@
 * add package.json ([3daf4bc](https://github.com/posthtml/posthtml-parser/commit/3daf4bc))
 * basic ([2e38720](https://github.com/posthtml/posthtml-parser/commit/2e38720))
 * Initial commit ([285d87f](https://github.com/posthtml/posthtml-parser/commit/285d87f))
-

@@ -4,11 +4,14 @@
     "lib": [
       "ES2022"
     ],
-    "esModuleInterop": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "strict": true,
-    "strictNullChecks": true
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "strict": true
   },
   "include": ["src/**/*.ts"]
 }
