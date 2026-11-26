@@ -1,5 +1,9 @@
 ## Unreleased
 
+### Bug Fixes
+
+* Keep `<![CDATA[...]]>` markers inside SVG in HTML mode. With htmlparser2 12 the markers were dropped, so `<svg><style><![CDATA[a{}]]></style></svg>` rendered as `<svg><style>a{}</style></svg>` and CDATA in SVG `<text>` lost its wrapper. CDATA outside foreign content is still a comment, and `xmlMode`/`recognizeCDATA` still expose plain text.
+
 ## 0.13.0 (2026-10-28)
 
 ### Breaking Changes

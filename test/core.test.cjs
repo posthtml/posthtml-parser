@@ -22,6 +22,55 @@ test("should be parse CDATA", () => {
   assert.deepEqual(tree, expected);
 });
 
+test("should keep CDATA markers inside SVG style and script", () => {
+  const tree = parser(
+    "<svg><style><![CDATA[a{color:red}]]></style><script>/*<![CDATA[*/x=\"<>\"/*]]>*/</script></svg>",
+  );
+  const expected = [
+    {
+      tag: "svg",
+      content: [
+        { tag: "style", content: ["<![CDATA[a{color:red}]]>"] },
+        { tag: "script", content: ['/*<![CDATA[*/x="<>"/*]]>*/'] },
+      ],
+    },
+  ];
+  assert.deepEqual(tree, expected);
+});
+
+test("should keep CDATA markers inside SVG text content", () => {
+  const tree = parser("<svg><text>a <![CDATA[b<c]]> d</text></svg>");
+  const expected = [{ tag: "svg", content: [{ tag: "text", content: ["a <![CDATA[b<c]]> d"] }] }];
+  assert.deepEqual(tree, expected);
+});
+
+test("should not duplicate CDATA markers in raw text elements", () => {
+  const tree = parser("<script><![CDATA[a<b]]></script><svg><style><![CDATA[c]]></style></svg>");
+  const expected = [
+    { tag: "script", content: ["<![CDATA[a<b]]>"] },
+    { tag: "svg", content: [{ tag: "style", content: ["<![CDATA[c]]>"] }] },
+  ];
+  assert.deepEqual(tree, expected);
+});
+
+test("should parse CDATA outside foreign content as a comment", () => {
+  assert.deepEqual(parser("<div><![CDATA[a<b]]></div>"), [{ tag: "div", content: ["<!--[CDATA[a<b]]-->"] }]);
+  assert.deepEqual(parser("<math><mi><![CDATA[x<y]]></mi></math>"), [
+    { tag: "math", content: [{ tag: "mi", content: ["<!--[CDATA[x<y]]-->"] }] },
+  ]);
+});
+
+test("should expose CDATA text without markers with recognizeCDATA", () => {
+  const tree = parser("<div><![CDATA[a<b]]></div><svg><style><![CDATA[c]]></style></svg>", {
+    recognizeCDATA: true,
+  });
+  const expected = [
+    { tag: "div", content: ["a<b"] },
+    { tag: "svg", content: [{ tag: "style", content: ["c"] }] },
+  ];
+  assert.deepEqual(tree, expected);
+});
+
 test("should be parse tag with escape object in attribute", () => {
   const html =
     '<button data-bem="{&quot;button&quot;:{&quot;checkedView&quot;:&quot;extra&quot;}}"' + ' type="submit"></button>';
