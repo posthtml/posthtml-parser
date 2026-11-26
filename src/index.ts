@@ -226,6 +226,19 @@ export const parser = (html: string, options: Options = {}): Node[] => {
   }
 
   function ontext(text: string) {
+    // In HTML mode htmlparser2 reports a CDATA section inside foreign content
+    // (SVG) as plain text without its markers. Restore them so the section
+    // renders back as written. Raw text such as <script> content already
+    // includes the markers; xmlMode and recognizeCDATA keep exposing plain text.
+    if (
+      !options.xmlMode &&
+      !options.recognizeCDATA &&
+      html.startsWith("<![CDATA[", parser.startIndex) &&
+      !text.startsWith("<![CDATA[")
+    ) {
+      text = `<![CDATA[${text}]]>`;
+    }
+
     const last: Node = bufferArrayLast();
 
     if (last === undefined) {
